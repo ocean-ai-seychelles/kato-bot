@@ -1,0 +1,79 @@
+# Dory Bot Configuration
+# Fill in your Discord server's IDs and customize settings below
+
+[server]
+guild_id = 0  # Your Discord server ID (right-click server → Copy ID)
+
+[channels]
+welcome = 0                     # Channel ID for welcome messages
+getting_started = 0             # Channel ID for reaction roles (read-only)
+mod_log = 0                     # Channel ID for moderation logs
+
+# Role-specific channels (optional)
+# Format: { channel_id = <ID>, role_id = <ROLE_ID>, name = "description" }
+role_specific_channels = [
+    # Example: { channel_id = 123456789, role_id = 987654321, name = "reinforcement-learning" }
+]
+
+[roles]
+initial = 0                     # Role ID assigned via reaction in getting-started
+moderator = 0                   # Moderator role ID
+admin = 0                       # Admin role ID
+
+[reaction_roles]
+# Message ID for the pinned message in getting-started channel
+message_id = 0
+
+# Emoji-to-role mappings
+# Format: { emoji = "✅", role_id = <ROLE_ID> }
+mappings = [
+    # Example: { emoji = "✅", role_id = 123456789 }
+]
+
+[welcome]
+enabled = true
+message_template = "Welcome {mention} to {server}! Please visit {channel} to get started."
+
+[automod]
+enabled = true
+
+[automod.spam]
+enabled = true
+max_messages = 5                # Maximum messages in time window
+time_window_seconds = 10        # Time window for spam detection
+action = "timeout"              # Action: 'delete', 'timeout', 'warn'
+timeout_duration = 300          # Timeout duration in seconds (5 minutes)
+
+[automod.caps]
+enabled = true
+threshold_percentage = 70       # Percentage of message that's caps
+min_length = 10                 # Minimum message length to check
+action = "delete"
+
+[automod.mass_mentions]
+enabled = true
+max_mentions = 5                # Max user mentions per message
+action = "delete"
+
+[automod.banned_words]
+enabled = true
+action = "delete"
+words = [
+    # Add banned words here
+    # "example_banned_word",
+]
+
+[moderation]
+# Warning thresholds with automatic escalation
+# Format: { warnings = <count>, action = "<action>", duration = <seconds> }
+warning_thresholds = [
+    { warnings = 3, action = "timeout", duration = 3600 },    # 1 hour timeout at 3 warnings
+    { warnings = 5, action = "kick" },                        # Kick at 5 warnings
+    { warnings = 7, action = "ban" },                         # Ban at 7 warnings
+]
+
+[logging]
+log_message_edits = true
+log_message_deletes = true
+log_member_joins = true
+log_member_leaves = true
