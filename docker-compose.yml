@@ -1,0 +1,15 @@
+services:
+  dory-bot:
+    build: .
+    container_name: dory-bot
+    restart: unless-stopped
+    volumes:
+      # Persist database across container restarts
+      - ./data:/app/data
+      # Mount config and env files
+      - ./assets:/app/assets:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Optionally expose for debugging (not needed for Discord bot)
+    # ports:
+    #   - "8080:8080"
