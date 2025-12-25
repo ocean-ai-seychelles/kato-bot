@@ -1,15 +1,47 @@
 [project]
 name = "dory-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "OCEAN AI's discord moderation bot"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "discord-py>=2.6.4",
     "python-dotenv>=1.2.1",
+    "aiosqlite>=0.19.0",
 ]
 
 [dependency-groups]
 dev = [
     "ruff>=0.14.10",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
 ]
+
+[tool.ruff]
+# Target Python version (helps Ruff avoid false positives for older syntax)
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+# 1. CORE RULE SELECTION
+# D: missing docstrings
+# E/W: pycodestyle (Errors/Warnings)
+# F: Pyflakes (Critical logic errors)
+# I: isort (Import sorting)
+# B: flake8-bugbear (Common design flaws)
+# UP: pyupgrade (Modernize Python syntax)
+# E501: line length warnings
+select = ["D","E", "F", "I", "B", "UP","E501"]
+
+# 3. AUTO-FIXING BEHAVIOR
+# Enable auto-fix for all enabled rules that support it
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+# Matches Black's default style exactly
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"

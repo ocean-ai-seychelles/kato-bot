@@ -11,3 +11,14 @@ wheels/
 
 # environment variables
 .env
+
+# Database files
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Test configuration (contains secrets)
+tests/test_config/test_server.toml
+
+# pytest cache
+.pytest_cache/
