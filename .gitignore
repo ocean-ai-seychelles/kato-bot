@@ -22,3 +22,21 @@ tests/test_config/test_server.toml
 
 # pytest cache
 .pytest_cache/
+
+# Ruff cache
+.ruff_cache/
+
+# Pre-commit cache
+.pre-commit-config.yaml.bak
+
+# Coverage reports
+.coverage
+htmlcov/
+coverage.xml
+
+# Bot runtime files
+bot.log
+bot.pid
+
+# claude settings
+.claude/settings.local.json

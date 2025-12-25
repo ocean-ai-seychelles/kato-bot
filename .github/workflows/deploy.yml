@@ -1,47 +1,47 @@
-name: Deploy Discord Bot
+# name: Deploy Discord Bot
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:  # Allow manual trigger
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:  # Allow manual trigger
 
-jobs:
-  deploy:
-    runs-on: self-hosted  # Requires setting up a self-hosted runner
+# jobs:
+#   deploy:
+#     runs-on: self-hosted  # Requires setting up a self-hosted runner
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
+#       - name: Set up Python 3.13
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.13'
 
-      - name: Install uv
-        run: pip install uv
+#       - name: Install uv
+#         run: pip install uv
 
-      - name: Install dependencies
-        run: uv pip install --system -r pyproject.toml
+#       - name: Install dependencies
+#         run: uv pip install --system -r pyproject.toml
 
-      - name: Stop existing bot (if running)
-        run: |
-          pkill -f "python main.py" || true
-        continue-on-error: true
+#       - name: Stop existing bot (if running)
+#         run: |
+#           pkill -f "python main.py" || true
+#         continue-on-error: true
 
-      - name: Start bot in background
-        run: |
-          nohup python main.py > bot.log 2>&1 &
-          echo $! > bot.pid
+#       - name: Start bot in background
+#         run: |
+#           nohup python main.py > bot.log 2>&1 &
+#           echo $! > bot.pid
 
-      - name: Verify bot is running
-        run: |
-          sleep 5
-          if ps -p $(cat bot.pid) > /dev/null; then
-            echo "Bot started successfully"
-          else
-            echo "Bot failed to start"
-            cat bot.log
-            exit 1
-          fi
+#       - name: Verify bot is running
+#         run: |
+#           sleep 5
+#           if ps -p $(cat bot.pid) > /dev/null; then
+#             echo "Bot started successfully"
+#           else
+#             echo "Bot failed to start"
+#             cat bot.log
+#             exit 1
+#           fi
