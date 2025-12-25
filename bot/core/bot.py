@@ -94,8 +94,11 @@ class DoryBot(commands.Bot):
         await self.db.apply_migrations()
         logger.info("✓ Database migrations applied")
 
-        # Load cogs (when they're created in future phases)
-        # await self.load_extension('bot.cogs.welcome')
+        # Load cogs
+        await self.load_extension("bot.cogs.welcome")
+        logger.info("✓ Welcome cog loaded")
+
+        # Future cogs
         # await self.load_extension('bot.cogs.reaction_roles')
         # await self.load_extension('bot.cogs.automod')
         # await self.load_extension('bot.cogs.moderation')

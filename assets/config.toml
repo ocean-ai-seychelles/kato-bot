@@ -2,12 +2,12 @@
 # Fill in your Discord server's IDs and customize settings below
 
 [server]
-guild_id = 0  # Your Discord server ID (right-click server → Copy ID)
+guild_id = 1405987897676533911  # OCEAN AI
 
 [channels]
-welcome = 0                     # Channel ID for welcome messages
-getting_started = 0             # Channel ID for reaction roles (read-only)
-mod_log = 0                     # Channel ID for moderation logs
+welcome = 1453693365219754067                     # welcome
+getting_started = 1453693346253115424             # getting-started (read-only)
+mod_log = 1453693519079145575                     # mod-log
 
 # Role-specific channels (optional)
 # Format: { channel_id = <ID>, role_id = <ROLE_ID>, name = "description" }
@@ -16,18 +16,18 @@ role_specific_channels = [
 ]
 
 [roles]
-initial = 0                     # Role ID assigned via reaction in getting-started
-moderator = 0                   # Moderator role ID
-admin = 0                       # Admin role ID
+initial = 1453697714025005118                     # member role (assigned via reaction)
+moderator = 1453693780698857553                   # admin role (acts as moderator)
+admin = 1453693780698857553                       # admin role
 
 [reaction_roles]
 # Message ID for the pinned message in getting-started channel
-message_id = 0
+message_id = 1453701281003737175
 
 # Emoji-to-role mappings
 # Format: { emoji = "✅", role_id = <ROLE_ID> }
 mappings = [
-    # Example: { emoji = "✅", role_id = 123456789 }
+    { emoji = "✅", role_id = 1453697714025005118 }  # member role
 ]
 
 [welcome]

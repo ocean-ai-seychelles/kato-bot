@@ -74,6 +74,8 @@ class Database:
             raise RuntimeError("Database is already connected")
 
         self.connection = await aiosqlite.connect(str(self.db_path))
+        # Enable row factory for dict-like access
+        self.connection.row_factory = aiosqlite.Row
         # Enable foreign key constraints
         await self.connection.execute("PRAGMA foreign_keys = ON")
         await self.connection.commit()
