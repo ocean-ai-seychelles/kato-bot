@@ -31,9 +31,6 @@ jobs:
       - name: Run Ruff formatter check
         run: uv run ruff format --check .
 
-      - name: Create data directory
-        run: mkdir -p data
-
       - name: Run tests with pytest
         run: uv run pytest tests/ -v --cov=bot --cov-report=term-missing
 

@@ -18,7 +18,6 @@ install:
 	uv pip install -r pyproject.toml
 
 test:
-	rm -f data/dory.db
 	uv run pytest tests/ -v --cov=bot --cov-report=term-missing
 
 lint:
