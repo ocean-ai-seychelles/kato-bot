@@ -101,9 +101,11 @@ class DoryBot(commands.Bot):
         await self.load_extension("bot.cogs.reaction_roles")
         logger.info("✓ Reaction roles cog loaded")
 
+        await self.load_extension("bot.cogs.moderation")
+        logger.info("✓ Moderation cog loaded")
+
         # Future cogs
         # await self.load_extension('bot.cogs.automod')
-        # await self.load_extension('bot.cogs.moderation')
         # await self.load_extension('bot.cogs.logging')
         # await self.load_extension('bot.cogs.admin')
 
