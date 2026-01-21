@@ -104,10 +104,14 @@ class DoryBot(commands.Bot):
         await self.load_extension("bot.cogs.moderation")
         logger.info("✓ Moderation cog loaded")
 
-        # Future cogs
-        # await self.load_extension('bot.cogs.automod')
-        # await self.load_extension('bot.cogs.logging')
-        # await self.load_extension('bot.cogs.admin')
+        await self.load_extension("bot.cogs.automod")
+        logger.info("✓ AutoMod cog loaded")
+
+        await self.load_extension("bot.cogs.logging")
+        logger.info("✓ Logging cog loaded")
+
+        await self.load_extension("bot.cogs.admin")
+        logger.info("✓ Admin cog loaded")
 
         logger.info("✓ Setup complete")
 

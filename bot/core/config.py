@@ -122,6 +122,35 @@ class Config:
 
         return value
 
+    def reload(self) -> None:
+        """Reload configuration from the TOML file.
+
+        This method re-reads the configuration file and updates the
+        internal data dictionary. Useful for picking up configuration
+        changes without restarting the bot.
+
+        Raises:
+            FileNotFoundError: If the configuration file no longer exists.
+            ValueError: If the configuration is missing required sections.
+            tomllib.TOMLDecodeError: If the TOML file is malformed.
+
+        Example:
+            >>> config = Config("assets/config.toml")
+            >>> # Make changes to config.toml externally
+            >>> config.reload()  # Pick up the changes
+
+        """
+        if not self.path.exists():
+            raise FileNotFoundError(
+                f"Configuration file not found: {self.path}\n"
+                f"Cannot reload non-existent configuration."
+            )
+
+        with open(self.path, "rb") as f:
+            self.data = tomllib.load(f)
+
+        self._validate()
+
     def __repr__(self) -> str:
         """Return a string representation of the Config object.
 

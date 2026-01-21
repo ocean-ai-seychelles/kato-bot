@@ -132,33 +132,175 @@ class TestFormatDuration:
 
 
 class TestCanModerate:
-    """Tests for the can_moderate function.
+    """Tests for the can_moderate function using mock Discord members."""
 
-    Note: These tests require mock Discord members which are complex to set up.
-    The actual permission checks are tested via integration tests with a real
-    Discord server. Here we document the expected behavior.
+    def test_cannot_moderate_self(self) -> None:
+        """Test that users cannot moderate themselves."""
+        from unittest.mock import MagicMock
 
-    Expected behavior:
-        - Cannot moderate self → False, "You cannot moderate yourself."
-        - Cannot moderate bot → False, "I cannot moderate myself."
-        - Cannot moderate owner → False, "You cannot moderate the server owner."
-        - Cannot moderate higher role → False, "...equal or higher role..."
-        - Bot cannot moderate higher role → False, "...my role is not high enough..."
-        - Valid moderation → True, None
+        from bot.utils.moderation import can_moderate
 
-    """
+        moderator = MagicMock()
+        moderator.id = 12345
 
-    def test_can_moderate_documentation(self) -> None:
-        """Document can_moderate function behavior.
+        target = MagicMock()
+        target.id = 12345  # Same as moderator
 
-        Full testing requires mock Discord members with:
-        - guild.me (bot member)
-        - guild.owner_id
-        - top_role comparisons
+        can_mod, error = can_moderate(moderator, target)
 
-        This is tested in integration tests with real Discord objects.
+        assert can_mod is False
+        assert error == "You cannot moderate yourself."
 
-        """
-        # This test documents expected behavior
-        # Actual testing happens in integration tests
-        pass
+    def test_cannot_moderate_bot(self) -> None:
+        """Test that users cannot moderate the bot itself."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999  # Bot's ID
+
+        target = MagicMock()
+        target.id = 99999  # Same as bot
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is False
+        assert error == "I cannot moderate myself."
+
+    def test_cannot_moderate_server_owner(self) -> None:
+        """Test that users cannot moderate the server owner."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999
+        moderator.guild.owner_id = 55555
+
+        target = MagicMock()
+        target.id = 55555  # Server owner
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is False
+        assert error == "You cannot moderate the server owner."
+
+    def test_cannot_moderate_higher_role(self) -> None:
+        """Test that users cannot moderate members with higher roles."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        # Create mock roles with position comparison
+        high_role = MagicMock()
+        high_role.__ge__ = lambda self, other: True  # Always greater or equal
+
+        low_role = MagicMock()
+        low_role.__ge__ = lambda self, other: False  # Always less
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999
+        moderator.guild.owner_id = 55555
+        moderator.top_role = low_role
+
+        target = MagicMock()
+        target.id = 67890
+        target.display_name = "HighRoleUser"
+        target.top_role = high_role
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is False
+        assert "cannot moderate" in error
+        assert "equal or higher role" in error
+
+    def test_cannot_moderate_equal_role(self) -> None:
+        """Test that users cannot moderate members with equal roles."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        # Create mock role that returns True for >= comparison
+        equal_role = MagicMock()
+        equal_role.__ge__ = lambda self, other: True
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999
+        moderator.guild.owner_id = 55555
+        moderator.top_role = equal_role
+
+        target = MagicMock()
+        target.id = 67890
+        target.display_name = "EqualRoleUser"
+        target.top_role = equal_role
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is False
+        assert "equal or higher role" in error
+
+    def test_bot_cannot_moderate_higher_role_target(self) -> None:
+        """Test that bot cannot moderate if its role is not high enough."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        # Moderator has high role but bot has low role
+        mod_role = MagicMock()
+        target_role = MagicMock()
+        bot_role = MagicMock()
+
+        # Target role >= moderator role should be False (mod can moderate)
+        # Target role >= bot role should be True (bot cannot moderate)
+        target_role.__ge__ = lambda self, other: other is bot_role
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999
+        moderator.guild.owner_id = 55555
+        moderator.top_role = mod_role
+        moderator.guild.me.top_role = bot_role
+
+        target = MagicMock()
+        target.id = 67890
+        target.display_name = "TargetUser"
+        target.top_role = target_role
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is False
+        assert "my role is not high enough" in error
+
+    def test_can_moderate_valid_target(self) -> None:
+        """Test that moderation is allowed when all checks pass."""
+        from unittest.mock import MagicMock
+
+        from bot.utils.moderation import can_moderate
+
+        # Create roles where target is always lower
+        target_role = MagicMock()
+        target_role.__ge__ = lambda self, other: False  # Always lower
+
+        high_role = MagicMock()
+
+        moderator = MagicMock()
+        moderator.id = 12345
+        moderator.guild.me.id = 99999
+        moderator.guild.owner_id = 55555
+        moderator.top_role = high_role
+        moderator.guild.me.top_role = high_role
+
+        target = MagicMock()
+        target.id = 67890
+        target.display_name = "ValidTarget"
+        target.top_role = target_role
+
+        can_mod, error = can_moderate(moderator, target)
+
+        assert can_mod is True
+        assert error is None

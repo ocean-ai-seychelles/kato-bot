@@ -187,3 +187,63 @@ moderator = 333333333
 
         # Should not raise ValueError
         assert config.get("server", "anything", default="default") == "default"
+
+    def test_reload_updates_data(self, tmp_path: Path) -> None:
+        """Test that reload() updates configuration data."""
+        config_path = tmp_path / "test_config.toml"
+
+        # Create initial config
+        config_path.write_text("""
+[server]
+guild_id = 123
+
+[channels]
+welcome = 456
+
+[roles]
+initial = 789
+""")
+
+        config = Config(str(config_path))
+        assert config.get("server", "guild_id") == 123
+
+        # Modify the config file
+        config_path.write_text("""
+[server]
+guild_id = 999
+
+[channels]
+welcome = 456
+
+[roles]
+initial = 789
+""")
+
+        # Reload and verify
+        config.reload()
+        assert config.get("server", "guild_id") == 999
+
+    def test_reload_missing_file_raises_error(self, tmp_path: Path) -> None:
+        """Test that reload() raises error if file is deleted."""
+        config_path = tmp_path / "test_config.toml"
+
+        # Create initial config
+        config_path.write_text("""
+[server]
+guild_id = 123
+
+[channels]
+welcome = 456
+
+[roles]
+initial = 789
+""")
+
+        config = Config(str(config_path))
+
+        # Delete the file
+        config_path.unlink()
+
+        # Reload should raise error
+        with pytest.raises(FileNotFoundError):
+            config.reload()
