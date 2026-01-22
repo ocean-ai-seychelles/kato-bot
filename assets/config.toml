@@ -8,26 +8,34 @@ welcome = 1453693365219754067                     # welcome
 getting_started = 1453693346253115424             # getting-started (read-only)
 mod_log = 1453693519079145575                     # mod-log
 
-# Role-specific channels (optional)
-# Format: { channel_id = <ID>, role_id = <ROLE_ID>, name = "description" }
-role_specific_channels = [
-    # Example: { channel_id = 123456789, role_id = 987654321, name = "reinforcement-learning" }
-]
+# Topic channels (managed via interest_roles)
+deep_learning = 1463840239523987458
+software_eng = 1453694972867121215
+math = 1453694990134939781
+classical_ml = 1463840192334139412
+computer_vision = 1463840105373503529
+reinforcement_learning = 1453695010514927800
+nlp = 1463847818673262660
 
 [roles]
 initial = 1453697714025005118                     # member role (assigned via reaction)
 moderator = 1453693780698857553                   # admin role (acts as moderator)
 admin = 1453693780698857553                       # admin role
+# Topic roles (reference only, managed via interest_roles)
+deep_learning = 1463838174882304033
+software_eng = 1463838475206791192
+math = 1463838375692996628
+classical_ml = 1463837711101333568
+computer_vision = 1463838265764483166
+reinforcement_learning = 1463838306130329610
+nlp = 1463846135574560789
 
 [reaction_roles]
-# Message ID for the pinned message in getting-started channel
-message_id = 1453701281003737175
+# Old message deleted, using dropdown system instead
+message_id = 0
 
-# Emoji-to-role mappings
-# Format: { emoji = "✅", role_id = <ROLE_ID> }
-mappings = [
-    { emoji = "✅", role_id = 1453697714025005118 }  # member role
-]
+# Emoji-to-role mappings (disabled - using dropdown system)
+mappings = []
 
 [welcome]
 enabled = true
@@ -100,54 +108,54 @@ enabled = true
 key = "deep-learning"
 label = "Deep Learning"
 description = "All things perceptrons and more"
-emoji = "🤖"
-role_id = 1463838174882304033  # Replace with actual role ID
-channel_id = 1463840239523987458  # Replace with actual channel ID
+emoji = "🧠"
+role_id = 1463838174882304033
+channel_id = 1463840239523987458
 
 [[interest_roles.interests]]
 key = "software-eng"
-label = "Reinforcement Learning"
-description = "Discuss RL algorithms and techniques"
-emoji = "🤖"
-role_id = 1463838475206791192  # Replace with actual role ID
-channel_id = 1453694972867121215  # Replace with actual channel ID
+label = "Software Engineering"
+description = "Software development and best practices"
+emoji = "💻"
+role_id = 1463838475206791192
+channel_id = 1453694972867121215
 
 [[interest_roles.interests]]
 key = "math"
-label = "Reinforcement Learning"
-description = "Discuss RL algorithms and techniques"
-emoji = "🤖"
-role_id = 1463838375692996628  # Replace with actual role ID
-channel_id = 1453694990134939781  # Replace with actual channel ID
+label = "Math"
+description = "Mathematical foundations for AI/ML"
+emoji = "📐"
+role_id = 1463838375692996628
+channel_id = 1453694990134939781
 
 [[interest_roles.interests]]
 key = "classical-ml"
-label = "Reinforcement Learning"
-description = "Discuss RL algorithms and techniques"
-emoji = "🤖"
-role_id = 1463837711101333568  # Replace with actual role ID
-channel_id = 1463840192334139412  # Replace with actual channel ID
+label = "Classical ML"
+description = "Traditional machine learning algorithms"
+emoji = "📊"
+role_id = 1463837711101333568
+channel_id = 1463840192334139412
 
 [[interest_roles.interests]]
-key = "computer_vision"
+key = "computer-vision"
 label = "Computer Vision"
 description = "Image processing and visual AI"
 emoji = "👁️"
-role_id = 1463838265764483166  # Replace with actual role ID
-channel_id = 1463840105373503529  # Replace with actual channel ID
+role_id = 1463838265764483166
+channel_id = 1463840105373503529
 
 [[interest_roles.interests]]
 key = "reinforcement-learning"
-label = "Natural Language Processing"
-description = "Text analysis and language models"
-emoji = "📝"
-role_id = 1463838306130329610  # Replace with actual role ID
-channel_id = 1453695010514927800  # Replace with actual channel ID
+label = "Reinforcement Learning"
+description = "RL algorithms and techniques"
+emoji = "🎮"
+role_id = 1463838306130329610
+channel_id = 1453695010514927800
 
 [[interest_roles.interests]]
 key = "natural-language-processing"
 label = "Natural Language Processing"
 description = "Text analysis and language models"
 emoji = "📝"
-role_id = 1463846135574560789  # Replace with actual role ID
-channel_id = 1463847818673262660  # Replace with actual channel ID
+role_id = 1463846135574560789
+channel_id = 1463847818673262660

@@ -87,6 +87,9 @@ class InterestSelect(discord.ui.Select):
             interaction: The interaction from the select menu.
 
         """
+        # Defer immediately to avoid 3-second timeout when processing multiple roles
+        await interaction.response.defer(ephemeral=True)
+
         guild_id = interaction.guild.id
         user_id = interaction.user.id
         member = interaction.user
@@ -160,7 +163,7 @@ class InterestSelect(discord.ui.Select):
             title="Interests Updated",
             description=description,
         )
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.followup.send(embed=embed, ephemeral=True)
 
         logger.info(
             f"Updated interests for {member.name}: "
