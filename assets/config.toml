@@ -39,7 +39,7 @@ mappings = []
 
 [welcome]
 enabled = true
-message_template = "Welcome {mention} to {server}! Please visit {channel} to get started."
+message_template = "Welcome {mention} to {server}! Head over to {channel} to complete your registration and unlock the community."
 
 [automod]
 enabled = true

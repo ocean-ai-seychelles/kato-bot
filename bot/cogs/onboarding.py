@@ -293,6 +293,148 @@ class RegistrationView(discord.ui.View):
         await interaction.response.send_modal(modal)
 
 
+class GettingStartedView(discord.ui.View):
+    """Persistent view for the getting-started channel.
+
+    This view combines registration and interest selection into one
+    comprehensive onboarding flow.
+
+    Attributes:
+        bot: The bot instance.
+
+    """
+
+    def __init__(self, bot: KatoBot) -> None:
+        """Initialize the getting started view.
+
+        Args:
+            bot: The bot instance.
+
+        """
+        super().__init__(timeout=None)  # Persistent view
+        self.bot = bot
+
+    @discord.ui.button(
+        label="Step 1: Complete Registration",
+        style=discord.ButtonStyle.primary,
+        custom_id="getting_started:register",
+        emoji="📝",
+        row=0,
+    )
+    async def register_button(
+        self, interaction: discord.Interaction, button: discord.ui.Button
+    ) -> None:
+        """Handle registration button click.
+
+        Opens the KYC modal when the button is clicked.
+
+        Args:
+            interaction: The button interaction.
+            button: The button that was clicked.
+
+        """
+        # Check if already verified
+        existing = await self.bot.db.fetch_one(
+            "SELECT * FROM member_profiles WHERE guild_id = ? AND user_id = ?",
+            (interaction.guild.id, interaction.user.id),
+        )
+
+        if existing:
+            embed = create_success_embed(
+                title="Already Registered",
+                description=(
+                    "You've already completed registration!\n\n"
+                    "Click **Step 2** below to select your interests and "
+                    "unlock topic channels."
+                ),
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # Open KYC modal
+        modal = KYCModal(self.bot)
+        await interaction.response.send_modal(modal)
+
+    @discord.ui.button(
+        label="Step 2: Select Interests",
+        style=discord.ButtonStyle.secondary,
+        custom_id="getting_started:interests",
+        emoji="🎯",
+        row=0,
+    )
+    async def interests_button(
+        self, interaction: discord.Interaction, button: discord.ui.Button
+    ) -> None:
+        """Handle interests button click.
+
+        Opens the interest selector for verified members.
+
+        Args:
+            interaction: The button interaction.
+            button: The button that was clicked.
+
+        """
+        # Check if verified first
+        existing = await self.bot.db.fetch_one(
+            "SELECT * FROM member_profiles WHERE guild_id = ? AND user_id = ?",
+            (interaction.guild.id, interaction.user.id),
+        )
+
+        if not existing:
+            embed = create_error_embed(
+                title="Registration Required",
+                description=(
+                    "Please complete **Step 1** first!\n\n"
+                    "Click the **Complete Registration** button to verify "
+                    "your membership, then you can select your interests."
+                ),
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # Get the InterestRoles cog and delegate to it
+        interest_cog = self.bot.get_cog("InterestRoles")
+        if not interest_cog:
+            embed = create_error_embed(
+                title="System Error",
+                description="Interest roles system is not available.",
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # Get interest options and current selections
+        options = await interest_cog._get_interest_options(interaction.guild.id)
+        if not options:
+            embed = create_info_embed(
+                title="No Interests Available",
+                description="No interests are currently configured.",
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        current_interests = await interest_cog._get_member_interests(
+            interaction.guild.id, interaction.user.id
+        )
+
+        # Import here to avoid circular imports
+        from bot.cogs.interest_roles import InterestSelectView
+
+        # Create view with populated options
+        view = InterestSelectView(
+            self.bot, interest_cog, options, list(current_interests)
+        )
+
+        embed = create_info_embed(
+            title="Select Your Interests",
+            description=(
+                "Choose the topics you're interested in. "
+                "You'll gain access to channels for your selected interests.\n\n"
+                "You can change your selections at any time."
+            ),
+        )
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+
+
 class OnboardingCog(commands.Cog, name="Onboarding"):
     """Cog for handling member onboarding and KYC verification.
 
@@ -318,10 +460,11 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
-        """Register persistent view when bot starts."""
-        # Register the persistent view for button handling
+        """Register persistent views when bot starts."""
+        # Register the persistent views for button handling
         self.bot.add_view(RegistrationView(self.bot))
-        logger.info("Registration view registered")
+        self.bot.add_view(GettingStartedView(self.bot))
+        logger.info("Onboarding views registered")
 
     def get_registration_view(self) -> RegistrationView:
         """Get a new registration view instance.
@@ -428,6 +571,58 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
                 description=f"Registration button posted in {channel.mention}.",
             )
             await ctx.send(embed=confirm)
+
+    @commands.command(name="post_getting_started")
+    @commands.has_permissions(administrator=True)
+    async def post_getting_started(
+        self, ctx: commands.Context, channel: discord.TextChannel = None
+    ) -> None:
+        """Post the combined getting-started message with registration and interests.
+
+        This command requires administrator permissions. Posts a comprehensive
+        onboarding message with both registration and interest selection buttons.
+
+        Args:
+            ctx: The command context.
+            channel: The channel to post in (defaults to current channel).
+
+        Example:
+            !post_getting_started #getting-started
+
+        """
+        target_channel = channel or ctx.channel
+
+        embed = create_info_embed(
+            title="Welcome to OCEAN AI!",
+            description=(
+                "We're excited to have you here! This is a community for AI/ML "
+                "enthusiasts to learn, share, and collaborate.\n\n"
+                "**To unlock the server, follow these steps:**\n\n"
+                "**Step 1: Complete Registration**\n"
+                "Click the button below to verify your membership. "
+                "This only takes a moment.\n\n"
+                "**Step 2: Select Your Interests**\n"
+                "After registering, choose the topics you're interested in. "
+                "This grants you access to dedicated channels for those topics "
+                "(Deep Learning, Computer Vision, NLP, and more).\n\n"
+                "*You must complete Step 1 before Step 2.*"
+            ),
+        )
+        view = GettingStartedView(self.bot)
+
+        await target_channel.send(embed=embed, view=view)
+
+        if channel and channel != ctx.channel:
+            confirm = create_success_embed(
+                title="Getting Started Posted",
+                description=f"Getting started message posted in {channel.mention}.",
+            )
+            await ctx.send(embed=confirm)
+
+        logger.info(
+            f"Posted getting-started message in #{target_channel.name} "
+            f"by {ctx.author.name}"
+        )
 
     @commands.command(name="kyc_status")
     @commands.has_permissions(administrator=True)
@@ -584,6 +779,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
         await ctx.send(embed=embed)
         logger.info(f"KYC data deleted for {member.name} by {ctx.author.name}")
 
+    @post_getting_started.error
     @kyc_status.error
     @kyc_list.error
     @kyc_delete.error
