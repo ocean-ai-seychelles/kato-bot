@@ -13,7 +13,16 @@ Usage:
 
 import pytest
 
-from bot.cogs.onboarding import EMAIL_REGEX, KYCModal, OnboardingCog, RegistrationView
+from bot.cogs.onboarding import (
+    EMAIL_REGEX,
+    KYCModal,
+    OnboardingCog,
+    RegistrationView,
+    is_garbage_input,
+    is_sequential,
+    is_valid_id_number,
+    is_valid_name,
+)
 from bot.core.bot import KatoBot
 from bot.core.config import Config
 
@@ -47,6 +56,132 @@ class TestEmailValidation:
         ]
         for email in invalid_emails:
             assert not EMAIL_REGEX.match(email), f"'{email}' should be invalid"
+
+
+class TestNameValidation:
+    """Test full name validation."""
+
+    def test_valid_names(self) -> None:
+        """Test that valid names are accepted."""
+        valid_names = [
+            "John Doe",
+            "Mary Jane Smith",
+            "Jean-Pierre Dupont",
+            "O'Brien Patrick",
+            "Ana Maria Garcia",
+        ]
+        for name in valid_names:
+            is_valid, error = is_valid_name(name)
+            assert is_valid, f"'{name}' should be valid but got: {error}"
+
+    def test_single_word_names_rejected(self) -> None:
+        """Test that single word names are rejected."""
+        is_valid, error = is_valid_name("John")
+        assert not is_valid
+        assert "first and last name" in error.lower()
+
+    def test_garbage_names_rejected(self) -> None:
+        """Test that garbage input is rejected."""
+        # These are rejected because each individual word is garbage
+        garbage_names = ["test user", "fake name", "none none"]
+        for name in garbage_names:
+            is_valid, _ = is_valid_name(name)
+            assert not is_valid, f"'{name}' should be rejected as garbage"
+
+    def test_names_with_numbers_rejected(self) -> None:
+        """Test that names with numbers are rejected."""
+        is_valid, _ = is_valid_name("John Doe123")
+        assert not is_valid
+
+
+class TestIDNumberValidation:
+    """Test ID number validation."""
+
+    def test_valid_id_numbers(self) -> None:
+        """Test that valid ID numbers are accepted."""
+        valid_ids = [
+            "55667788",  # Non-sequential pattern
+            "13579024",  # Mixed non-sequential
+            "1029384756",  # Long non-sequential
+            "90817263",  # Random-ish pattern
+        ]
+        for id_num in valid_ids:
+            is_valid, error = is_valid_id_number(id_num)
+            assert is_valid, f"'{id_num}' should be valid but got: {error}"
+
+    def test_non_digits_rejected(self) -> None:
+        """Test that non-digit characters are rejected."""
+        invalid_ids = [
+            "ABC12345",
+            "123-456-789",
+            "12345ABC",
+            "12 34 56",
+        ]
+        for id_num in invalid_ids:
+            is_valid, error = is_valid_id_number(id_num)
+            assert not is_valid, f"'{id_num}' should be rejected"
+            assert "digits" in error.lower()
+
+    def test_short_ids_rejected(self) -> None:
+        """Test that IDs shorter than 5 digits are rejected."""
+        is_valid, error = is_valid_id_number("1234")
+        assert not is_valid
+        assert "5 digits" in error
+
+    def test_all_same_digit_rejected(self) -> None:
+        """Test that IDs with all same digit are rejected."""
+        invalid_ids = ["111111", "000000", "999999999"]
+        for id_num in invalid_ids:
+            is_valid, _ = is_valid_id_number(id_num)
+            assert not is_valid, f"'{id_num}' should be rejected"
+
+    def test_sequential_ids_rejected(self) -> None:
+        """Test that sequential IDs are rejected."""
+        invalid_ids = ["123456", "654321", "12345678", "987654321"]
+        for id_num in invalid_ids:
+            is_valid, _ = is_valid_id_number(id_num)
+            assert not is_valid, f"'{id_num}' should be rejected as sequential"
+
+
+class TestSequentialDetection:
+    """Test the is_sequential helper function."""
+
+    def test_ascending_sequence(self) -> None:
+        """Test that ascending sequences are detected."""
+        assert is_sequential("12345")
+        assert is_sequential("123456789")
+
+    def test_descending_sequence(self) -> None:
+        """Test that descending sequences are detected."""
+        assert is_sequential("54321")
+        assert is_sequential("987654321")
+
+    def test_non_sequential(self) -> None:
+        """Test that non-sequential numbers are not flagged."""
+        assert not is_sequential("13579")
+        assert not is_sequential("24680")
+        assert not is_sequential("55667788")
+
+
+class TestGarbageDetection:
+    """Test the is_garbage_input helper function."""
+
+    def test_common_garbage_detected(self) -> None:
+        """Test that common garbage inputs are detected."""
+        garbage = ["test", "asdf", "fake", "none", "null", "na", "n/a"]
+        for g in garbage:
+            assert is_garbage_input(g), f"'{g}' should be detected as garbage"
+
+    def test_repeated_chars_detected(self) -> None:
+        """Test that repeated character inputs are detected."""
+        assert is_garbage_input("aaaa")
+        assert is_garbage_input("1111")
+
+    def test_valid_inputs_not_flagged(self) -> None:
+        """Test that valid inputs are not flagged."""
+        valid = ["John Doe", "Maria Garcia", "New York", "12345678"]
+        for v in valid:
+            assert not is_garbage_input(v), f"'{v}' should not be flagged as garbage"
 
 
 class TestOnboardingCogInitialization:
@@ -131,7 +266,7 @@ class TestKYCModal:
         assert modal.email.min_length == 5
         assert modal.country.min_length == 2
         assert modal.address.min_length == 5
-        assert modal.id_number.min_length == 2
+        assert modal.id_number.min_length == 5
 
         await bot.close()
 

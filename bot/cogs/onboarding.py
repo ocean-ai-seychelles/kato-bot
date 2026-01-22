@@ -33,6 +33,123 @@ logger = logging.getLogger(__name__)
 # Email validation regex
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
+# Name validation: letters, spaces, hyphens, apostrophes only
+NAME_REGEX = re.compile(r"^[a-zA-Z\s\-']+$")
+
+# Obvious garbage patterns to reject
+GARBAGE_PATTERNS = [
+    r"^(.)\1+$",  # All same character (aaaa, 1111)
+    r"^(abc|xyz|qwerty|asdf|test|fake|none|null|na|n/a|user|name|sample)$",  # Common fakes
+]
+GARBAGE_REGEXES = [re.compile(p, re.IGNORECASE) for p in GARBAGE_PATTERNS]
+
+
+def is_garbage_input(value: str) -> bool:
+    """Check if input matches common garbage patterns.
+
+    Args:
+        value: The input string to check.
+
+    Returns:
+        True if the input appears to be garbage, False otherwise.
+
+    """
+    cleaned = value.strip()
+    for regex in GARBAGE_REGEXES:
+        if regex.match(cleaned):
+            return True
+    return False
+
+
+def is_valid_name(name: str) -> tuple[bool, str]:
+    """Validate a full name.
+
+    Args:
+        name: The name to validate.
+
+    Returns:
+        Tuple of (is_valid, error_message).
+
+    """
+    cleaned = name.strip()
+
+    # Must have at least 2 words (first and last name)
+    words = cleaned.split()
+    if len(words) < 2:
+        return False, "Please enter your full name (first and last name)."
+
+    # Must contain only valid name characters
+    if not NAME_REGEX.match(cleaned):
+        return False, "Name should only contain letters, spaces, hyphens, and apostrophes."
+
+    # Check for garbage in the full name or individual words
+    if is_garbage_input(cleaned):
+        return False, "Please enter your real name."
+
+    # Check each word individually for common fake names
+    for word in words:
+        if is_garbage_input(word):
+            return False, "Please enter your real name."
+
+    return True, ""
+
+
+def is_valid_id_number(id_number: str) -> tuple[bool, str]:
+    """Validate an ID number (digits only).
+
+    Args:
+        id_number: The ID number to validate.
+
+    Returns:
+        Tuple of (is_valid, error_message).
+
+    """
+    cleaned = id_number.strip()
+
+    # Must be digits only
+    if not cleaned.isdigit():
+        return False, "ID number must contain only digits (no letters or dashes)."
+
+    # Must be at least 5 digits
+    if len(cleaned) < 5:
+        return False, "ID number must be at least 5 digits."
+
+    # Check for all same digit (111111)
+    if len(set(cleaned)) == 1:
+        return False, "Please enter a valid ID number."
+
+    # Check for sequential digits (123456 or 654321)
+    if is_sequential(cleaned):
+        return False, "Please enter a valid ID number."
+
+    return True, ""
+
+
+def is_sequential(digits: str) -> bool:
+    """Check if a string of digits is sequential (ascending or descending).
+
+    Args:
+        digits: String of digits to check.
+
+    Returns:
+        True if sequential, False otherwise.
+
+    """
+    if len(digits) < 3:
+        return False
+
+    # Check ascending
+    ascending = True
+    descending = True
+
+    for i in range(1, len(digits)):
+        if int(digits[i]) != int(digits[i - 1]) + 1:
+            ascending = False
+        if int(digits[i]) != int(digits[i - 1]) - 1:
+            descending = False
+
+    return ascending or descending
+
 
 class KYCModal(discord.ui.Modal, title="Member Registration"):
     """Modal form for KYC data collection.
@@ -84,10 +201,10 @@ class KYCModal(discord.ui.Modal, title="Member Registration"):
 
     id_number = discord.ui.TextInput(
         label="ID Number",
-        placeholder="National ID / Passport number",
+        placeholder="National ID or Passport number (digits only)",
         required=True,
-        min_length=2,
-        max_length=50,
+        min_length=5,
+        max_length=20,
     )
 
     def __init__(self, bot: KatoBot) -> None:
@@ -114,6 +231,26 @@ class KYCModal(discord.ui.Modal, title="Member Registration"):
             embed = create_error_embed(
                 title="Invalid Email",
                 description="Please enter a valid email address and try again.",
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # Validate full name
+        name_valid, name_error = is_valid_name(self.full_name.value)
+        if not name_valid:
+            embed = create_error_embed(
+                title="Invalid Name",
+                description=name_error,
+            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
+
+        # Validate ID number
+        id_valid, id_error = is_valid_id_number(self.id_number.value)
+        if not id_valid:
+            embed = create_error_embed(
+                title="Invalid ID Number",
+                description=id_error,
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
             return
