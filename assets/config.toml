@@ -76,3 +76,10 @@ log_message_edits = true
 log_message_deletes = true
 log_member_joins = true
 log_member_leaves = true
+
+[onboarding]
+enabled = true
+# Role assigned after KYC verification (required)
+verified_role_id = 1453697714025005118  # member role
+# Role for unverified members (optional - remove line if not used)
+# unverified_role_id = 0

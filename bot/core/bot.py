@@ -95,6 +95,10 @@ class KatoBot(commands.Bot):
         logger.info("✓ Database migrations applied")
 
         # Load cogs
+        # Onboarding must be loaded before welcome (welcome uses onboarding view)
+        await self.load_extension("bot.cogs.onboarding")
+        logger.info("✓ Onboarding cog loaded")
+
         await self.load_extension("bot.cogs.welcome")
         logger.info("✓ Welcome cog loaded")
 

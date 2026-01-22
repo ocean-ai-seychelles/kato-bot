@@ -146,8 +146,15 @@ class WelcomeCog(commands.Cog, name="Welcome"):
             user=member,
         )
 
+        # Get registration view if onboarding is enabled
+        view = None
+        if self.bot.config.get("onboarding", "enabled", default=False):
+            onboarding_cog = self.bot.get_cog("Onboarding")
+            if onboarding_cog:
+                view = onboarding_cog.get_registration_view()
+
         try:
-            await welcome_channel.send(embed=embed)
+            await welcome_channel.send(embed=embed, view=view)
             logger.info(f"Sent welcome message for {member.name} ({member.id})")
         except discord.Forbidden:
             logger.error(
@@ -254,7 +261,14 @@ class WelcomeCog(commands.Cog, name="Welcome"):
             user=ctx.author,
         )
 
-        await ctx.send("**Preview of welcome message:**", embed=embed)
+        # Get registration view if onboarding is enabled
+        view = None
+        if self.bot.config.get("onboarding", "enabled", default=False):
+            onboarding_cog = self.bot.get_cog("Onboarding")
+            if onboarding_cog:
+                view = onboarding_cog.get_registration_view()
+
+        await ctx.send("**Preview of welcome message:**", embed=embed, view=view)
         logger.info(f"Welcome message test by {ctx.author.name}")
 
     @set_welcome_channel.error
