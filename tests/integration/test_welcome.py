@@ -14,7 +14,7 @@ Usage:
 import pytest
 
 from bot.cogs.welcome import WelcomeCog
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 
@@ -24,7 +24,7 @@ class TestWelcomeTemplateSubstitution:
     def test_substitute_template_vars_basic(self) -> None:
         """Test basic template variable substitution."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = WelcomeCog(bot)
 
         # Create mock member and guild
@@ -55,7 +55,7 @@ class TestWelcomeTemplateSubstitution:
     def test_substitute_all_variables(self) -> None:
         """Test that all template variables are substituted."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = WelcomeCog(bot)
 
         class MockMember:
@@ -90,7 +90,7 @@ class TestWelcomeCogInitialization:
     def test_cog_initializes(self) -> None:
         """Test that the welcome cog initializes successfully."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = WelcomeCog(bot)
 
         assert cog.bot == bot
@@ -99,7 +99,7 @@ class TestWelcomeCogInitialization:
     def test_cog_has_commands(self) -> None:
         """Test that the cog has the expected commands."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = WelcomeCog(bot)
 
         # Check for command existence
@@ -110,7 +110,7 @@ class TestWelcomeCogInitialization:
     def test_cog_has_listener(self) -> None:
         """Test that the cog has the on_member_join listener."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = WelcomeCog(bot)
 
         assert hasattr(cog, "on_member_join")
@@ -120,7 +120,7 @@ class TestWelcomeCogInitialization:
 async def test_cog_loads_successfully() -> None:
     """Test that the welcome cog can be loaded into the bot."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Load the cog
     await bot.load_extension("bot.cogs.welcome")
@@ -136,7 +136,7 @@ async def test_cog_loads_successfully() -> None:
 async def test_welcome_cog_in_bot_startup() -> None:
     """Test that welcome cog is loaded during bot startup."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Run setup hook (this loads cogs)
     await bot.setup_hook()

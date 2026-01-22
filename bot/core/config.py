@@ -1,4 +1,4 @@
-"""Configuration loader for Dory bot.
+"""Configuration loader for Kato bot.
 
 This module provides a configuration loader that reads TOML files and validates
 server-specific settings. It supports nested key access and provides sensible

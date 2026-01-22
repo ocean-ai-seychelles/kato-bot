@@ -15,7 +15,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 # Load environment variables
@@ -37,7 +37,7 @@ async def setup_reaction_message() -> None:
     config = Config("assets/config.toml")
 
     # Create bot
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Track if we've posted the message
     message_posted = False

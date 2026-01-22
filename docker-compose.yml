@@ -1,7 +1,7 @@
 services:
-  dory-bot:
+  kato-bot:
     build: .
-    container_name: dory-bot
+    container_name: kato-bot
     restart: unless-stopped
     volumes:
       # Persist database across container restarts

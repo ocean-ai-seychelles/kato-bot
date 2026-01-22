@@ -1,4 +1,4 @@
-"""Main entry point for Dory Discord moderation bot.
+"""Main entry point for Kato Discord moderation bot.
 
 This script loads configuration, initializes the bot, and connects to Discord.
 The bot will automatically initialize the database and load all cogs on startup.
@@ -18,7 +18,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 # Load environment variables
@@ -45,7 +45,7 @@ def main() -> None:
         print(f"✓ Configuration loaded from {config.path}")
 
         # Create and run bot
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         print("Starting bot...")
         bot.run(token)
 

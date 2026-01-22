@@ -27,7 +27,7 @@ async def isolated_database(monkeypatch, request):
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         # Create unique database path
-        db_path = Path(tmpdir) / "test_dory.db"
+        db_path = Path(tmpdir) / "test_kato.db"
 
         # Monkey-patch the Database class to use this path
         from bot.core.database import Database

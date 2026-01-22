@@ -399,7 +399,7 @@ class TestDatabaseInitialization:
         assert nested_path.parent.exists()
 
     def test_default_db_path(self) -> None:
-        """Test that default database path is data/dory.db."""
+        """Test that default database path is data/kato.db."""
         db = Database()
 
-        assert db.db_path == Path("data/dory.db")
+        assert db.db_path == Path("data/kato.db")

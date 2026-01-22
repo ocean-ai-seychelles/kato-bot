@@ -1,11 +1,11 @@
 """Core bot infrastructure and foundational components.
 
-This package contains the essential building blocks for the Dory moderation bot,
+This package contains the essential building blocks for the Kato moderation bot,
 including the custom bot class, configuration management, and database layer.
 All other bot components depend on the infrastructure provided here.
 
 Modules:
-    bot: Custom DoryBot class that extends discord.ext.commands.Bot with
+    bot: Custom KatoBot class that extends discord.ext.commands.Bot with
         database and configuration integration, cog loading, and async
         initialization via setup_hook().
 
@@ -25,10 +25,10 @@ Design Principles:
 
 Example:
     >>> from bot.core.config import Config
-    >>> from bot.core.bot import DoryBot
+    >>> from bot.core.bot import KatoBot
     >>>
     >>> config = Config("assets/config.toml")
-    >>> bot = DoryBot(config)
+    >>> bot = KatoBot(config)
     >>> bot.run(token)
 
 """

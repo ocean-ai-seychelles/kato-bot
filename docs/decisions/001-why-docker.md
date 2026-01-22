@@ -110,7 +110,7 @@ Package bot as Docker container, orchestrate with Docker Compose.
 ```yaml
 # docker-compose.yml
 services:
-  dory-bot:
+  kato-bot:
     build: .
     restart: unless-stopped
     volumes:

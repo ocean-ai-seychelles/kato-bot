@@ -19,7 +19,7 @@ from datetime import UTC, datetime
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.automod import sanitize_content_for_log
 from bot.utils.embeds import create_error_embed, create_info_embed
 
@@ -33,11 +33,11 @@ class LoggingCog(commands.Cog, name="Logging"):
     and mod-log channel for audit purposes.
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the logging cog.
 
         Args:
@@ -739,7 +739,7 @@ class LoggingCog(commands.Cog, name="Logging"):
         await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the Logging cog.
 
     This function is called by discord.py when loading the extension.

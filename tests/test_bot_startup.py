@@ -15,7 +15,7 @@ Usage:
 
 import pytest
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 
@@ -26,7 +26,7 @@ class TestBotStartup:
     async def test_bot_initializes_with_config(self) -> None:
         """Test that bot initializes successfully with valid config."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         assert bot.config == config
         assert bot.db is not None
@@ -36,7 +36,7 @@ class TestBotStartup:
     async def test_bot_setup_hook_connects_database(self) -> None:
         """Test that setup_hook establishes database connection."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         # Database should not be connected yet
         assert bot.db.connection is None
@@ -64,7 +64,7 @@ class TestBotStartup:
     async def test_bot_close_cleans_up_database(self) -> None:
         """Test that bot.close() properly closes database connection."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.setup_hook()
         assert bot.db.connection is not None
@@ -79,7 +79,7 @@ class TestBotStartup:
     async def test_bot_has_required_intents(self) -> None:
         """Test that bot is configured with required Discord intents."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         # Verify required intents are enabled
         assert bot.intents.members is True

@@ -19,10 +19,10 @@ FAILED tests/unit/test_database.py::TestDatabaseInitialization::test_default_db_
 **Error examples**:
 ```python
 # Expected
-assert db.db_path == Path("data/dory.db")
+assert db.db_path == Path("data/kato.db")
 
 # Got
-assert db.db_path == Path("/var/folders/m3/.../tmp_xyz/test_dory.db")
+assert db.db_path == Path("/var/folders/m3/.../tmp_xyz/test_kato.db")
 ```
 
 ## Root Cause
@@ -35,7 +35,7 @@ assert db.db_path == Path("/var/folders/m3/.../tmp_xyz/test_dory.db")
 @pytest.fixture(autouse=True)  # ← Applied to ALL tests
 async def isolated_database(monkeypatch):
     with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = Path(tmpdir) / "test_dory.db"
+        db_path = Path(tmpdir) / "test_kato.db"
 
         # Monkey-patch Database.__init__ to ALWAYS use temp path
         def patched_init(self, db_path_param=None):
@@ -54,15 +54,15 @@ async def isolated_database(monkeypatch):
 ```python
 def test_default_db_path(self):
     """Test that Database uses default path when none specified."""
-    db = Database()  # Should use "data/dory.db"
-    assert db.db_path == Path("data/dory.db")
+    db = Database()  # Should use "data/kato.db"
+    assert db.db_path == Path("data/kato.db")
 ```
 
 **With fixture active**:
 1. Test calls `Database()`
 2. Fixture's patched `__init__` runs
 3. **Always** uses temp path, ignoring default
-4. Test fails because path is temp dir, not "data/dory.db"
+4. Test fails because path is temp dir, not "data/kato.db"
 
 **Another example**:
 ```python
@@ -160,7 +160,7 @@ async def isolated_database(monkeypatch, request):
 
     # Only reached for integration tests
     with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = Path(tmpdir) / "test_dory.db"
+        db_path = Path(tmpdir) / "test_kato.db"
 
         def patched_init(self, db_path_param=None):
             original_init(self, str(db_path))
@@ -204,7 +204,7 @@ Neither unit nor integration tests need to change:
 ```python
 # Integration test - gets patched automatically
 async def test_reaction_roles():  # ← No fixture parameter
-    bot = DoryBot(config)  # Gets temp database
+    bot = KatoBot(config)  # Gets temp database
 
 # Unit test - not patched
 def test_default_path():  # ← No fixture parameter

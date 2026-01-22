@@ -31,7 +31,7 @@ bot/cogs/
 from discord.ext import commands
 
 class WelcomeCog(commands.Cog):
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         self.bot = bot
         self.config = bot.config
 
@@ -44,7 +44,7 @@ class WelcomeCog(commands.Cog):
     async def set_welcome(self, ctx: commands.Context, channel: discord.TextChannel):
         # Admin command
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     await bot.add_cog(WelcomeCog(bot))
 ```
 
@@ -146,7 +146,7 @@ bot/
 │   ├── welcome.py          # Member join/leave events, welcome messages
 │   └── reaction_roles.py   # Reaction role assignment system
 ├── core/
-│   ├── bot.py              # Main DoryBot class, loads cogs
+│   ├── bot.py              # Main KatoBot class, loads cogs
 │   ├── config.py           # Config loader
 │   └── database.py         # Database abstraction
 └── utils/
@@ -155,7 +155,7 @@ bot/
 
 ## Cog Lifecycle
 
-1. **Bot startup**: `DoryBot.setup_hook()` runs
+1. **Bot startup**: `KatoBot.setup_hook()` runs
 2. **Cog loading**: `await bot.load_extension("bot.cogs.welcome")`
 3. **Cog initialization**: `WelcomeCog.__init__()` called
 4. **Event registration**: Discord.py registers `@commands.Cog.listener()` methods
@@ -170,7 +170,7 @@ Test individual methods in isolation:
 
 ```python
 async def test_get_reaction_role_mapping_returns_role_id():
-    bot = DoryBot(config)
+    bot = KatoBot(config)
     cog = ReactionRolesCog(bot)
     await bot.db.connect()
     # ... test cog methods
@@ -181,7 +181,7 @@ Test cog with actual database:
 
 ```python
 async def test_reaction_roles_synced_on_ready():
-    bot = DoryBot(config)
+    bot = KatoBot(config)
     cog = ReactionRolesCog(bot)
     await bot.db.connect()
     await bot.db.apply_migrations()

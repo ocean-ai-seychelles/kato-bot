@@ -1,5 +1,5 @@
 [project]
-name = "dory-bot"
+name = "kato-bot"
 version = "0.1.0"
 description = "OCEAN AI's discord moderation bot"
 readme = "README.md"

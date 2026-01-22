@@ -13,7 +13,7 @@ Usage:
 import pytest
 
 from bot.cogs.reaction_roles import ReactionRolesCog
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 
@@ -24,7 +24,7 @@ class TestReactionRoleMappings:
     async def test_get_reaction_role_mapping_returns_role_id(self) -> None:
         """Test that _get_reaction_role_mapping returns the correct role ID."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         # Connect database
@@ -58,7 +58,7 @@ class TestReactionRoleMappings:
     async def test_get_reaction_role_mapping_returns_none_when_not_found(self) -> None:
         """Test that _get_reaction_role_mapping returns None when no mapping exists."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         # Connect database
@@ -77,7 +77,7 @@ class TestReactionRoleMappings:
     async def test_sync_reaction_roles_from_config(self) -> None:
         """Test that reaction roles are synced from config to database."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         # Connect database
@@ -119,7 +119,7 @@ class TestReactionRoleMappings:
     async def test_sync_clears_old_mappings_for_message(self) -> None:
         """Test that syncing clears old mappings for the same message."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         # Connect database
@@ -165,7 +165,7 @@ class TestReactionRolesCogInitialization:
     def test_cog_initializes(self) -> None:
         """Test that the reaction roles cog initializes successfully."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         assert cog.bot == bot
@@ -174,7 +174,7 @@ class TestReactionRolesCogInitialization:
     def test_cog_has_listeners(self) -> None:
         """Test that the cog has the expected event listeners."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         assert hasattr(cog, "on_ready")
@@ -184,7 +184,7 @@ class TestReactionRolesCogInitialization:
     def test_cog_has_commands(self) -> None:
         """Test that the cog has the expected commands."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = ReactionRolesCog(bot)
 
         # Check for command existence
@@ -198,7 +198,7 @@ class TestReactionRolesCogInitialization:
 async def test_cog_loads_successfully() -> None:
     """Test that the reaction roles cog can be loaded into the bot."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Load the cog
     await bot.load_extension("bot.cogs.reaction_roles")
@@ -214,7 +214,7 @@ async def test_cog_loads_successfully() -> None:
 async def test_reaction_roles_cog_in_bot_startup() -> None:
     """Test that reaction roles cog is loaded during bot startup."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Run setup hook (this loads cogs)
     await bot.setup_hook()
@@ -230,7 +230,7 @@ async def test_reaction_roles_cog_in_bot_startup() -> None:
 async def test_reaction_roles_synced_on_ready() -> None:
     """Test that reaction roles are synced from config when bot starts."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Run setup hook
     await bot.setup_hook()

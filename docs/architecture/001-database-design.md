@@ -98,7 +98,7 @@ role_id = row["role_id"]  # ← Dictionary access, not tuple[0]
 ```
 bot/core/database.py       # Database class with connect/execute/migrations
 bot/migrations/            # SQL migration files
-data/dory.db              # SQLite database file (gitignored)
+data/kato.db              # SQLite database file (gitignored)
 ```
 
 ## Key Implementation Details
@@ -124,8 +124,8 @@ class Database:
 
 ### Connection Management
 
-- Connection opened in `DoryBot.setup_hook()` (runs before bot starts)
-- Connection closed in `DoryBot.close()` (runs on shutdown)
+- Connection opened in `KatoBot.setup_hook()` (runs before bot starts)
+- Connection closed in `KatoBot.close()` (runs on shutdown)
 - Single connection shared across all cogs (SQLite doesn't need pooling)
 
 ## Consequences

@@ -1,6 +1,6 @@
-"""Comprehensive test suite for the Dory Discord moderation bot.
+"""Comprehensive test suite for the Kato Discord moderation bot.
 
-This package contains all tests for the Dory bot, organized into integration
+This package contains all tests for the Kato bot, organized into integration
 tests (which run against a real Discord test server) and unit tests (which test
 pure Python logic in isolation using mocks).
 

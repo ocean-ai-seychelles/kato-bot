@@ -92,9 +92,9 @@ CMD ["python", "main.py"]
 
 ```yaml
 services:
-  dory-bot:
+  kato-bot:
     build: .
-    container_name: dory-bot
+    container_name: kato-bot
     restart: unless-stopped
     volumes:
       - ./data:/app/data          # Database persistence
@@ -128,8 +128,8 @@ data/*.db
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/your-org/dory-bot.git
-cd dory-bot
+git clone https://github.com/your-org/kato-bot.git
+cd kato-bot
 
 # 2. Add Discord token
 echo "DISCORD_TOKEN=your_token_here" > assets/.env

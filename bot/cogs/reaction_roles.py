@@ -21,7 +21,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.embeds import create_error_embed, create_info_embed, create_success_embed
 
 logger = logging.getLogger(__name__)
@@ -35,11 +35,11 @@ class ReactionRolesCog(commands.Cog, name="ReactionRoles"):
     when the bot was offline when reactions were added.
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the reaction roles cog.
 
         Args:
@@ -500,7 +500,7 @@ class ReactionRolesCog(commands.Cog, name="ReactionRoles"):
             await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the ReactionRoles cog.
 
     This function is called by discord.py when loading the extension.

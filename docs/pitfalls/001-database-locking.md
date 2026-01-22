@@ -15,7 +15,7 @@ sqlite3.IntegrityError: UNIQUE constraint failed: reaction_roles.message_id, rea
 ```
 
 **Symptoms**:
-- Tests passed locally when run with `rm -f data/dory.db && pytest`
+- Tests passed locally when run with `rm -f data/kato.db && pytest`
 - Tests failed in CI
 - Inconsistent failures (sometimes passed, sometimes failed)
 - Only affected integration tests, not unit tests
@@ -27,12 +27,12 @@ sqlite3.IntegrityError: UNIQUE constraint failed: reaction_roles.message_id, rea
 **SQLite file-level locking**: SQLite locks the entire database file during writes, not individual rows like PostgreSQL.
 
 **Test execution flow**:
-1. Test A creates `DoryBot(config)`
-2. Bot creates `Database("data/dory.db")`
+1. Test A creates `KatoBot(config)`
+2. Bot creates `Database("data/kato.db")`
 3. Test A connects, runs migrations, inserts data
 4. Test A calls `await bot.db.close()`
 5. Test B starts immediately
-6. Test B tries to open same `data/dory.db` file
+6. Test B tries to open same `data/kato.db` file
 7. **SQLite hasn't released file lock yet** ⚠️
 8. Test B fails with "database is locked"
 
@@ -64,7 +64,7 @@ The UNIQUE constraint on `(message_id, emoji)` prevented duplicate inserts.
 ## Why It Worked Locally But Not in CI
 
 **Locally**:
-- Ran `rm -f data/dory.db` before tests manually
+- Ran `rm -f data/kato.db` before tests manually
 - Tests ran sequentially with enough time between them
 - File system released locks quickly
 
@@ -80,7 +80,7 @@ The UNIQUE constraint on `(message_id, emoji)` prevented duplicate inserts.
 
 ```makefile
 test:
-	rm -f data/dory.db
+	rm -f data/kato.db
 	uv run pytest tests/ -v
 ```
 
@@ -95,7 +95,7 @@ test:
 async def test_example():
     # Test code
     await bot.db.close()
-    os.remove("data/dory.db")  # Manual cleanup
+    os.remove("data/kato.db")  # Manual cleanup
 ```
 
 **Why it failed**:
@@ -117,7 +117,7 @@ async def isolated_database(monkeypatch, request):
         return
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = Path(tmpdir) / "test_dory.db"
+        db_path = Path(tmpdir) / "test_kato.db"
         # Monkeypatch Database.__init__ to use temp path
 ```
 

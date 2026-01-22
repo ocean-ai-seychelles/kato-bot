@@ -1,7 +1,7 @@
 #!/bin/bash
-# Quick start script for Dory bot using Docker
+# Quick start script for Kato bot using Docker
 
-echo "Starting Dory Discord Bot..."
+echo "Starting Kato Discord Bot..."
 
 # Check if Docker is running
 if ! docker info > /dev/null 2>&1; then

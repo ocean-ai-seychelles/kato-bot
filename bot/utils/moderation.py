@@ -1,4 +1,4 @@
-"""Moderation utility functions for the Dory bot.
+"""Moderation utility functions for the Kato bot.
 
 This module provides helper functions for moderation commands including:
     - Duration parsing and formatting

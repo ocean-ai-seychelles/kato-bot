@@ -18,7 +18,7 @@ from datetime import UTC, datetime
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.embeds import create_error_embed, create_info_embed, create_success_embed
 
 logger = logging.getLogger(__name__)
@@ -31,12 +31,12 @@ class AdminCog(commands.Cog, name="Admin"):
     to manage the bot's operation.
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
         start_time: When the bot started.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the admin cog.
 
         Args:
@@ -67,7 +67,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         """
         embed = discord.Embed(
-            title="Dory Bot Status",
+            title="Kato Bot Status",
             color=discord.Color.blue(),
             timestamp=datetime.now(UTC),
         )
@@ -313,11 +313,11 @@ class AdminCog(commands.Cog, name="Admin"):
 
         """
         embed = discord.Embed(
-            title="Dory Bot",
+            title="Kato Bot",
             description=(
                 "A Discord moderation bot for the OCEAN AI community. "
-                "Named after the fish from Finding Nemo - helps members "
-                "not forget the community code of conduct."
+                "Named after the Kato Nwar (Seychelles Black Parrot) - "
+                "a wise guardian helping members follow the community code of conduct."
             ),
             color=discord.Color.blue(),
         )
@@ -393,7 +393,7 @@ class AdminCog(commands.Cog, name="Admin"):
         await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the Admin cog.
 
     This function is called by discord.py when loading the extension.

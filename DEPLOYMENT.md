@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers different ways to deploy the Dory bot for 24/7 uptime.
+This guide covers different ways to deploy the Kato bot for 24/7 uptime.
 
 ## Option 1: Docker (Recommended)
 
@@ -39,7 +39,7 @@ The bot will:
 docker-compose up -d --build
 
 # View logs
-docker-compose logs -f dory-bot
+docker-compose logs -f kato-bot
 
 # Restart bot
 docker-compose restart
@@ -67,19 +67,19 @@ docker-compose ps
 
 ## Option 3: systemd (Linux VPS)
 
-Create `/etc/systemd/system/dory-bot.service`:
+Create `/etc/systemd/system/kato-bot.service`:
 
 ```ini
 [Unit]
-Description=Dory Discord Bot
+Description=Kato Discord Bot
 After=network.target
 
 [Service]
 Type=simple
 User=YOUR_USERNAME
-WorkingDirectory=/path/to/dory-bot
-Environment="PATH=/path/to/dory-bot/.venv/bin:/usr/bin"
-ExecStart=/path/to/dory-bot/.venv/bin/python main.py
+WorkingDirectory=/path/to/kato-bot
+Environment="PATH=/path/to/kato-bot/.venv/bin:/usr/bin"
+ExecStart=/path/to/kato-bot/.venv/bin/python main.py
 Restart=always
 RestartSec=10
 
@@ -89,9 +89,9 @@ WantedBy=multi-user.target
 
 Enable and start:
 ```bash
-sudo systemctl enable dory-bot
-sudo systemctl start dory-bot
-sudo systemctl status dory-bot
+sudo systemctl enable kato-bot
+sudo systemctl start kato-bot
+sudo systemctl status kato-bot
 ```
 
 ## Option 4: Cloud Platforms
@@ -128,7 +128,7 @@ docker-compose logs -f --tail=100
 
 ### systemd logs
 ```bash
-sudo journalctl -u dory-bot -f
+sudo journalctl -u kato-bot -f
 ```
 
 ## Updating the Bot
@@ -142,7 +142,7 @@ docker-compose up -d --build
 ### systemd
 ```bash
 git pull
-sudo systemctl restart dory-bot
+sudo systemctl restart kato-bot
 ```
 
 ## Troubleshooting
@@ -154,7 +154,7 @@ sudo systemctl restart dory-bot
 
 ### Database locked errors
 - Ensure only one instance is running
-- Check file permissions on `data/dory.db`
+- Check file permissions on `data/kato.db`
 
 ### Permission errors
 - Verify bot has required Discord permissions

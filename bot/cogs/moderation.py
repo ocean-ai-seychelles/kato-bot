@@ -22,7 +22,7 @@ from datetime import UTC, datetime, timedelta
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.embeds import create_error_embed, create_info_embed, create_success_embed
 from bot.utils.moderation import can_moderate, format_duration, parse_duration
 
@@ -39,11 +39,11 @@ class ModerationCog(commands.Cog, name="Moderation"):
     All actions are logged to the database for audit purposes.
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the moderation cog.
 
         Args:
@@ -770,7 +770,7 @@ class ModerationCog(commands.Cog, name="Moderation"):
         await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the Moderation cog.
 
     This function is called by discord.py when loading the extension.

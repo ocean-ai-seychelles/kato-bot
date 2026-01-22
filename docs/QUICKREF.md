@@ -32,7 +32,7 @@ await db.execute("INSERT INTO reaction_roles (guild_id, ...) VALUES (?)")
 
 ```python
 # ❌ DON'T: Share database between tests
-# All tests use data/dory.db → locking errors
+# All tests use data/kato.db → locking errors
 
 # ✅ DO: Use isolated_database fixture
 # Each integration test gets unique temp database automatically
@@ -65,7 +65,7 @@ def selective_patch(monkeypatch, request):
 from discord.ext import commands
 
 class FeatureCog(commands.Cog):
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         self.bot = bot
         self.config = bot.config
 
@@ -83,7 +83,7 @@ class FeatureCog(commands.Cog):
     async def admin_command(self, ctx):
         # Admin-only command
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     await bot.add_cog(FeatureCog(bot))
 ```
 **See**: [ARCH-002: Cog Architecture](architecture/002-cog-architecture.md)
@@ -118,7 +118,7 @@ await self.bot.db.execute(
 
 ```python
 import pytest
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 class TestFeature:
@@ -127,7 +127,7 @@ class TestFeature:
         """Test description."""
         # Setup
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         await bot.db.connect()
         await bot.db.apply_migrations()
 
@@ -191,8 +191,8 @@ Before deploying new features:
 make run
 
 # Deploy to VPS (first time)
-git clone https://github.com/your-org/dory-bot.git
-cd dory-bot
+git clone https://github.com/your-org/kato-bot.git
+cd kato-bot
 echo "DISCORD_TOKEN=your_token" > assets/.env
 docker-compose up -d --build
 

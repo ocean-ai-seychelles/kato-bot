@@ -15,7 +15,7 @@ When running tests in CI, we encountered failures:
 - `sqlite3.OperationalError: database is locked`
 - `sqlite3.IntegrityError: UNIQUE constraint failed`
 
-**Root cause**: All tests were sharing the same `data/dory.db` file, causing:
+**Root cause**: All tests were sharing the same `data/kato.db` file, causing:
 - Race conditions when tests ran in parallel
 - Data pollution between tests
 - Incomplete cleanup leaving stale data
@@ -32,7 +32,7 @@ When running tests in CI, we encountered failures:
 
 ### Option 1: Manual Database Cleanup
 
-Add `rm -f data/dory.db` before tests in Makefile and CI.
+Add `rm -f data/kato.db` before tests in Makefile and CI.
 
 **Pros**:
 - Simple to implement
@@ -101,7 +101,7 @@ async def isolated_database(monkeypatch, request):
 
     # Create temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = Path(tmpdir) / "test_dory.db"
+        db_path = Path(tmpdir) / "test_kato.db"
 
         # Monkeypatch Database.__init__ to use temp path
         from bot.core.database import Database
@@ -141,14 +141,14 @@ Patch `Database.__init__` instead of passing path explicitly:
 monkeypatch.setattr(Database, "__init__", patched_init)
 ```
 
-**Why**: Existing tests do `bot = DoryBot(config)`, which creates `Database()` internally. No test changes needed.
+**Why**: Existing tests do `bot = KatoBot(config)`, which creates `Database()` internally. No test changes needed.
 
 **3. Temporary Directories**
 
 Use `tempfile.TemporaryDirectory()`:
 ```python
 with tempfile.TemporaryDirectory() as tmpdir:
-    db_path = Path(tmpdir) / "test_dory.db"
+    db_path = Path(tmpdir) / "test_kato.db"
 ```
 
 **Why**: Auto-cleanup when context exits, no leftover files.
@@ -202,7 +202,7 @@ async def isolated_database(monkeypatch):
 - `test_connect_creates_connection` - Expected db at specific path
 - `test_repr_shows_status` - Checked path in repr string
 - `test_db_path_created_if_missing` - Tested directory creation
-- `test_default_db_path` - Verified default is `data/dory.db`
+- `test_default_db_path` - Verified default is `data/kato.db`
 
 These tests failed because they were getting temp paths instead of their custom paths.
 

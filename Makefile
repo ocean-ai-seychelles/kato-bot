@@ -31,7 +31,7 @@ clean:
 	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".ruff_cache" -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
-	rm -f data/dory.db
+	rm -f data/kato.db
 	rm -f bot.log
 	rm -f bot.pid
 

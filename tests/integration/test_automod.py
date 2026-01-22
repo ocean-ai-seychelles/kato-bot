@@ -14,7 +14,7 @@ Usage:
 import pytest
 
 from bot.cogs.automod import AutoModCog
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 
@@ -24,7 +24,7 @@ class TestAutoModCogInitialization:
     def test_cog_initializes(self) -> None:
         """Test that the automod cog initializes correctly."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = AutoModCog(bot)
 
         assert cog.bot is bot
@@ -33,7 +33,7 @@ class TestAutoModCogInitialization:
     def test_cog_has_commands(self) -> None:
         """Test that the automod cog has all expected commands."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = AutoModCog(bot)
 
         command_names = [cmd.name for cmd in cog.get_commands()]
@@ -52,7 +52,7 @@ class TestBannedWordsDatabase:
     async def test_add_banned_word(self) -> None:
         """Test adding a banned word to the database."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -86,7 +86,7 @@ class TestBannedWordsDatabase:
     async def test_add_banned_regex(self) -> None:
         """Test adding a banned regex pattern to the database."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -119,7 +119,7 @@ class TestBannedWordsDatabase:
     async def test_remove_banned_word(self) -> None:
         """Test removing a banned word from the database."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -157,7 +157,7 @@ class TestBannedWordsDatabase:
     async def test_list_banned_words(self) -> None:
         """Test listing all banned words for a guild."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -191,7 +191,7 @@ class TestBannedWordsDatabase:
     async def test_banned_word_unique_constraint(self) -> None:
         """Test that duplicate banned words are rejected."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -227,7 +227,7 @@ class TestAutoModViolationsDatabase:
     async def test_log_violation(self) -> None:
         """Test logging an auto-mod violation."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -266,7 +266,7 @@ class TestAutoModViolationsDatabase:
     async def test_log_different_violation_types(self) -> None:
         """Test logging different violation types."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -318,7 +318,7 @@ class TestAutoModViolationsDatabase:
     async def test_query_violations_by_type(self) -> None:
         """Test querying violations by type."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -362,7 +362,7 @@ class TestRateLimitCacheDatabase:
     async def test_create_rate_limit_entry(self) -> None:
         """Test creating a rate limit cache entry."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -395,7 +395,7 @@ class TestRateLimitCacheDatabase:
     async def test_update_rate_limit_count(self) -> None:
         """Test incrementing rate limit count."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -437,7 +437,7 @@ class TestRateLimitCacheDatabase:
     async def test_reset_rate_limit_window(self) -> None:
         """Test resetting rate limit window."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -480,7 +480,7 @@ class TestRateLimitCacheDatabase:
 async def test_cog_loads_successfully() -> None:
     """Test that the automod cog loads without errors."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     await bot.db.connect()
     await bot.db.apply_migrations()
@@ -498,7 +498,7 @@ async def test_cog_loads_successfully() -> None:
 async def test_automod_cog_in_bot_startup() -> None:
     """Test that automod cog loads during bot startup."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Run setup_hook which loads all cogs
     await bot.setup_hook()

@@ -1,4 +1,4 @@
-"""Standalone migration runner for Dory bot database.
+"""Standalone migration runner for Kato bot database.
 
 This script can be run independently to apply database migrations without
 starting the bot. Useful for database maintenance and initial setup.
@@ -63,12 +63,12 @@ async def apply_migrations(db_path: str) -> None:
 def main() -> None:
     """Parse arguments and run migration script."""
     parser = argparse.ArgumentParser(
-        description="Apply database migrations for Dory bot"
+        description="Apply database migrations for Kato bot"
     )
     parser.add_argument(
         "--db-path",
-        default="data/dory.db",
-        help="Path to the SQLite database file (default: data/dory.db)",
+        default="data/kato.db",
+        help="Path to the SQLite database file (default: data/kato.db)",
     )
 
     args = parser.parse_args()

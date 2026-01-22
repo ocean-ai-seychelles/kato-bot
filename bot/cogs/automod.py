@@ -19,7 +19,7 @@ from datetime import UTC, datetime, timedelta
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.automod import (
     calculate_caps_percentage,
     count_mentions,
@@ -43,11 +43,11 @@ class AutoModCog(commands.Cog, name="AutoMod"):
         - Banned words (configurable word list with regex support)
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the auto-moderation cog.
 
         Args:
@@ -913,7 +913,7 @@ class AutoModCog(commands.Cog, name="AutoMod"):
         await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the AutoMod cog.
 
     This function is called by discord.py when loading the extension.

@@ -20,7 +20,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.utils.embeds import (
     create_error_embed,
     create_success_embed,
@@ -44,11 +44,11 @@ class WelcomeCog(commands.Cog, name="Welcome"):
         {channel}: Mentions the getting-started channel
 
     Attributes:
-        bot: The DoryBot instance.
+        bot: The KatoBot instance.
 
     """
 
-    def __init__(self, bot: DoryBot) -> None:
+    def __init__(self, bot: KatoBot) -> None:
         """Initialize the welcome cog.
 
         Args:
@@ -293,7 +293,7 @@ class WelcomeCog(commands.Cog, name="Welcome"):
             await ctx.send(embed=embed)
 
 
-async def setup(bot: DoryBot) -> None:
+async def setup(bot: KatoBot) -> None:
     """Load the Welcome cog.
 
     This function is called by discord.py when loading the extension.

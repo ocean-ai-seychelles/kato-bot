@@ -1,5 +1,4 @@
-# Dory Bot Configuration
-# Fill in your Discord server's IDs and customize settings below
+# Kato Bot Configuration
 
 [server]
 guild_id = 1405987897676533911  # OCEAN AI

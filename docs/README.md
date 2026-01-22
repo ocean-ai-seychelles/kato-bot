@@ -1,6 +1,6 @@
-# Dory Bot Documentation
+# Kato Bot Documentation
 
-This directory contains architectural decisions, pitfalls encountered, and solutions implemented during the development of Dory Bot.
+This directory contains architectural decisions, pitfalls encountered, and solutions implemented during the development of Kato Bot.
 
 ## Purpose
 

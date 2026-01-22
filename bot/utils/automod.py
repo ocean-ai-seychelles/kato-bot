@@ -1,4 +1,4 @@
-"""Auto-moderation utility functions for the Dory bot.
+"""Auto-moderation utility functions for the Kato bot.
 
 This module provides helper functions for auto-moderation checks including:
     - Caps percentage calculation

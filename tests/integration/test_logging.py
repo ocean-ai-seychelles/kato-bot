@@ -13,7 +13,7 @@ Usage:
 import pytest
 
 from bot.cogs.logging import LoggingCog
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 
@@ -23,7 +23,7 @@ class TestLoggingCogInitialization:
     def test_cog_initializes(self) -> None:
         """Test that the logging cog initializes correctly."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = LoggingCog(bot)
 
         assert cog.bot is bot
@@ -32,7 +32,7 @@ class TestLoggingCogInitialization:
     def test_cog_has_commands(self) -> None:
         """Test that the logging cog has all expected commands."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
         cog = LoggingCog(bot)
 
         command_names = [cmd.name for cmd in cog.get_commands()]
@@ -48,7 +48,7 @@ class TestMessageLogsDatabase:
     async def test_log_message_edit(self) -> None:
         """Test logging a message edit event."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -86,7 +86,7 @@ class TestMessageLogsDatabase:
     async def test_log_message_delete(self) -> None:
         """Test logging a message delete event."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -123,7 +123,7 @@ class TestMessageLogsDatabase:
     async def test_query_logs_by_author(self) -> None:
         """Test querying message logs for a specific author."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -173,7 +173,7 @@ class TestMessageLogsDatabase:
     async def test_query_logs_by_event_type(self) -> None:
         """Test querying message logs by event type."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -231,7 +231,7 @@ class TestAuditLogQueries:
     async def test_combined_audit_query(self) -> None:
         """Test querying combined audit data for a user."""
         config = Config("assets/config.toml")
-        bot = DoryBot(config)
+        bot = KatoBot(config)
 
         await bot.db.connect()
         await bot.db.apply_migrations()
@@ -297,7 +297,7 @@ class TestAuditLogQueries:
 async def test_cog_loads_successfully() -> None:
     """Test that the logging cog loads without errors."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     await bot.db.connect()
     await bot.db.apply_migrations()
@@ -315,7 +315,7 @@ async def test_cog_loads_successfully() -> None:
 async def test_logging_cog_in_bot_startup() -> None:
     """Test that logging cog loads during bot startup."""
     config = Config("assets/config.toml")
-    bot = DoryBot(config)
+    bot = KatoBot(config)
 
     # Run setup_hook which loads all cogs
     await bot.setup_hook()

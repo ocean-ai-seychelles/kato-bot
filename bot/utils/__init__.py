@@ -1,4 +1,4 @@
-"""Shared utility functions and helper modules for the Dory bot.
+"""Shared utility functions and helper modules for the Kato bot.
 
 This package contains reusable utilities that are used across multiple cogs
 and bot components. These utilities provide common functionality like permission

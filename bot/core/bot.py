@@ -1,17 +1,17 @@
-"""Custom bot class for Dory moderation bot.
+"""Custom bot class for Kato moderation bot.
 
-This module defines the DoryBot class, which extends discord.ext.commands.Bot
+This module defines the KatoBot class, which extends discord.ext.commands.Bot
 with integrated configuration and database management. The bot automatically
 loads cogs on startup and provides access to configuration and database
 connections to all cogs.
 
 Example:
     >>> from bot.core.config import Config
-    >>> from bot.core.bot import DoryBot
+    >>> from bot.core.bot import KatoBot
     >>> import os
     >>>
     >>> config = Config("assets/config.toml")
-    >>> bot = DoryBot(config)
+    >>> bot = KatoBot(config)
     >>> bot.run(os.getenv("DISCORD_TOKEN"))
 
 """
@@ -31,8 +31,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class DoryBot(commands.Bot):
-    """Custom Bot class for Dory moderation bot.
+class KatoBot(commands.Bot):
+    """Custom Bot class for Kato moderation bot.
 
     This class extends discord.ext.commands.Bot with:
         - Integrated configuration management
@@ -46,7 +46,7 @@ class DoryBot(commands.Bot):
 
     Example:
         >>> config = Config("assets/config.toml")
-        >>> bot = DoryBot(config)
+        >>> bot = KatoBot(config)
         >>> await bot.start(token)
 
     """
@@ -73,7 +73,7 @@ class DoryBot(commands.Bot):
         self.config = config
         self.db = Database()
 
-        logger.info("DoryBot initialized with config from %s", config.path)
+        logger.info("KatoBot initialized with config from %s", config.path)
 
     async def setup_hook(self) -> None:
         """Async initialization hook called before bot connects to Discord.

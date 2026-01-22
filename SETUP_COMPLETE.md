@@ -26,7 +26,7 @@ Your Discord server is now fully configured and ready for Phase 2 development!
 |------|-----|-------|---------|
 | admin | 1453693780698857553 | Purple (#9b59b6) | Server administrators |
 | member | 1453697714025005118 | Blue (#3498db) | Verified members |
-| dory | 1451308951630123038 | Teal (#1abc9c) | Bot role |
+| kato | 1451308951630123038 | Teal (#1abc9c) | Bot role |
 
 ### Reaction Role Setup
 - **Message ID**: 1453701281003737175
@@ -101,7 +101,7 @@ uv run setup_reaction_message.py
 ### For #getting-started:
 - @everyone: View + React (no send messages)
 - @admin: All permissions
-- @dory: Send messages + Add reactions + Manage messages
+- @kato: Send messages + Add reactions + Manage messages
 
 ### For content channels:
 - @everyone: Cannot view

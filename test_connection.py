@@ -18,7 +18,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from bot.core.bot import DoryBot
+from bot.core.bot import KatoBot
 from bot.core.config import Config
 
 # Load environment variables
@@ -45,7 +45,7 @@ async def test_connection() -> None:
     print(f"✓ Configuration loaded from {config.path}")
 
     # Create bot
-    bot = DoryBot(config)
+    bot = KatoBot(config)
     print("✓ Bot instance created")
 
     # Track if we've displayed info

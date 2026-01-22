@@ -1,4 +1,4 @@
-"""Dory Discord Moderation Bot.
+"""Kato Discord Moderation Bot.
 
 This package implements a comprehensive Discord moderation bot for the OCEAN AI
 community server. The bot provides automated moderation, role management via

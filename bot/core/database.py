@@ -1,4 +1,4 @@
-"""Database connection and management for Dory bot.
+"""Database connection and management for Kato bot.
 
 This module provides an async SQLite database layer using aiosqlite. It handles
 database connection management, schema initialization via migrations, and
@@ -12,7 +12,7 @@ The database layer is designed to:
 
 Example:
     >>> from bot.core.database import Database
-    >>> db = Database("data/dory.db")
+    >>> db = Database("data/kato.db")
     >>> await db.connect()
     >>> await db.apply_migrations()
     >>> await db.close()
@@ -36,7 +36,7 @@ class Database:
         connection: The aiosqlite database connection (None until connected).
 
     Example:
-        >>> db = Database("data/dory.db")
+        >>> db = Database("data/kato.db")
         >>> await db.connect()
         >>> try:
         >>>     rows = await db.fetch_all("SELECT * FROM guild_config")
@@ -45,12 +45,12 @@ class Database:
 
     """
 
-    def __init__(self, db_path: str = "data/dory.db") -> None:
+    def __init__(self, db_path: str = "data/kato.db") -> None:
         """Initialize database with file path.
 
         Args:
             db_path: Path to the SQLite database file. Defaults to
-                "data/dory.db". Parent directories will be created if
+                "data/kato.db". Parent directories will be created if
                 they don't exist.
 
         """

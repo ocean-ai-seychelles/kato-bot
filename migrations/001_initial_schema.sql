@@ -1,4 +1,4 @@
--- Initial database schema for Dory Discord moderation bot
+-- Initial database schema for Kato Discord moderation bot
 -- Migration: 001
 -- Description: Creates core tables for guild configuration, moderation,
 --              logging, and auto-moderation features.

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Dory is a Discord moderation bot for OCEAN AI community. Built with discord.py 2.6+ and async SQLite. Named after the fish from "Finding Nemo" - helps members not forget the community code of conduct.
+Kato is a Discord moderation bot for OCEAN AI community. Built with discord.py 2.6+ and async SQLite. Named after "Kato Nwar" (Seychelles Black Parrot) - a wise guardian helping members follow the community code of conduct.
 
 ## Common Commands
 
@@ -35,7 +35,7 @@ uv run pytest tests/integration/test_welcome.py -v
 ```
 bot/
 ├── core/
-│   ├── bot.py           # DoryBot class - entry point, cog loader
+│   ├── bot.py           # KatoBot class - entry point, cog loader
 │   ├── config.py        # TOML config loader (assets/config.toml)
 │   └── database.py      # Async SQLite wrapper with migration support
 ├── cogs/                # Feature modules (discord.py Cogs)
@@ -54,7 +54,7 @@ bot/
 ### Cog Structure
 ```python
 class FeatureCog(commands.Cog):
-    def __init__(self, bot: DoryBot):
+    def __init__(self, bot: KatoBot):
         self.bot = bot
 
     @commands.Cog.listener()
