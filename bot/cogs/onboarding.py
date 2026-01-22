@@ -916,7 +916,166 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
         await ctx.send(embed=embed)
         logger.info(f"KYC data deleted for {member.name} by {ctx.author.name}")
 
+    @commands.command(name="kyc_delete_id")
+    @commands.has_permissions(administrator=True)
+    async def kyc_delete_id(
+        self, ctx: commands.Context, user_id: int
+    ) -> None:
+        """Delete KYC data by user ID (for users who left the server).
+
+        This command requires administrator permissions. Use this when
+        a member has left the server and you need to remove their data.
+
+        Args:
+            ctx: The command context.
+            user_id: The Discord user ID to delete.
+
+        Example:
+            !kyc_delete_id 123456789012345678
+
+        """
+        # First check if there's data to delete
+        profile = await self.bot.db.fetch_one(
+            """
+            SELECT discord_username, full_name
+            FROM member_profiles
+            WHERE guild_id = ? AND user_id = ?
+            """,
+            (ctx.guild.id, user_id),
+        )
+
+        if not profile:
+            embed = create_error_embed(
+                title="No Data Found",
+                description=f"No KYC data found for user ID `{user_id}`.",
+            )
+            await ctx.send(embed=embed)
+            return
+
+        # Delete the data
+        await self.bot.db.execute(
+            "DELETE FROM member_profiles WHERE guild_id = ? AND user_id = ?",
+            (ctx.guild.id, user_id),
+        )
+
+        # Also delete any interest selections
+        await self.bot.db.execute(
+            "DELETE FROM member_interests WHERE guild_id = ? AND user_id = ?",
+            (ctx.guild.id, user_id),
+        )
+
+        embed = create_success_embed(
+            title="KYC Data Deleted",
+            description=(
+                f"KYC data deleted for:\n"
+                f"**User ID:** `{user_id}`\n"
+                f"**Username:** {profile['discord_username']}\n"
+                f"**Name:** {profile['full_name']}"
+            ),
+        )
+        await ctx.send(embed=embed)
+        logger.info(f"KYC data deleted for user ID {user_id} by {ctx.author.name}")
+
+    @commands.command(name="kyc_cleanup")
+    @commands.has_permissions(administrator=True)
+    async def kyc_cleanup(
+        self, ctx: commands.Context, confirm: str = None
+    ) -> None:
+        """Find and remove KYC data for users who left the server.
+
+        This command requires administrator permissions. Run without
+        arguments to see a list of orphaned records. Run with 'confirm'
+        to actually delete them.
+
+        Args:
+            ctx: The command context.
+            confirm: Pass 'confirm' to actually delete the records.
+
+        Example:
+            !kyc_cleanup          # List orphaned records
+            !kyc_cleanup confirm  # Delete orphaned records
+
+        """
+        # Get all KYC records for this guild
+        profiles = await self.bot.db.fetch_all(
+            """
+            SELECT user_id, discord_username, full_name, verified_at
+            FROM member_profiles
+            WHERE guild_id = ?
+            """,
+            (ctx.guild.id,),
+        )
+
+        if not profiles:
+            embed = create_info_embed(
+                title="KYC Cleanup",
+                description="No KYC records found in this server.",
+            )
+            await ctx.send(embed=embed)
+            return
+
+        # Find users no longer in the guild
+        orphaned = []
+        for profile in profiles:
+            member = ctx.guild.get_member(profile["user_id"])
+            if member is None:
+                orphaned.append(profile)
+
+        if not orphaned:
+            embed = create_success_embed(
+                title="KYC Cleanup",
+                description=(
+                    f"All {len(profiles)} KYC records belong to current members.\n"
+                    "No cleanup needed."
+                ),
+            )
+            await ctx.send(embed=embed)
+            return
+
+        if confirm and confirm.lower() == "confirm":
+            # Delete orphaned records
+            for profile in orphaned:
+                await self.bot.db.execute(
+                    "DELETE FROM member_profiles WHERE guild_id = ? AND user_id = ?",
+                    (ctx.guild.id, profile["user_id"]),
+                )
+                await self.bot.db.execute(
+                    "DELETE FROM member_interests WHERE guild_id = ? AND user_id = ?",
+                    (ctx.guild.id, profile["user_id"]),
+                )
+
+            embed = create_success_embed(
+                title="KYC Cleanup Complete",
+                description=f"Deleted {len(orphaned)} orphaned KYC records.",
+            )
+            await ctx.send(embed=embed)
+            logger.info(
+                f"KYC cleanup: deleted {len(orphaned)} records by {ctx.author.name}"
+            )
+        else:
+            # Show preview
+            description = f"**Found {len(orphaned)} orphaned records:**\n\n"
+            for profile in orphaned[:10]:
+                description += (
+                    f"- `{profile['user_id']}` - {profile['discord_username']} "
+                    f"({profile['full_name']})\n"
+                )
+            if len(orphaned) > 10:
+                description += f"\n*...and {len(orphaned) - 10} more*"
+
+            description += (
+                f"\n\nRun `!kyc_cleanup confirm` to delete these records."
+            )
+
+            embed = create_info_embed(
+                title="KYC Cleanup Preview",
+                description=description,
+            )
+            await ctx.send(embed=embed)
+
     @post_getting_started.error
+    @kyc_delete_id.error
+    @kyc_cleanup.error
     @kyc_status.error
     @kyc_list.error
     @kyc_delete.error
