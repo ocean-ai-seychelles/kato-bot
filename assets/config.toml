@@ -82,4 +82,72 @@ enabled = true
 # Role assigned after KYC verification (required)
 verified_role_id = 1453697714025005118  # member role
 # Role for unverified members (optional - remove line if not used)
-# unverified_role_id = 0
+unverified_role_id = 1463826302741123164
+
+[interest_roles]
+enabled = true
+
+# Interest options for members to select
+# Each interest grants access to a topic-specific channel via role assignment
+# key: unique identifier (snake_case)
+# label: display name shown in dropdown
+# description: tooltip shown in dropdown
+# emoji: optional emoji prefix
+# role_id: Discord role ID to assign
+# channel_id: Discord channel ID (for reference)
+
+[[interest_roles.interests]]
+key = "deep-learning"
+label = "Deep Learning"
+description = "All things perceptrons and more"
+emoji = "🤖"
+role_id = 1463838174882304033  # Replace with actual role ID
+channel_id = 1463840239523987458  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "software-eng"
+label = "Reinforcement Learning"
+description = "Discuss RL algorithms and techniques"
+emoji = "🤖"
+role_id = 1463838475206791192  # Replace with actual role ID
+channel_id = 1453694972867121215  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "math"
+label = "Reinforcement Learning"
+description = "Discuss RL algorithms and techniques"
+emoji = "🤖"
+role_id = 1463838375692996628  # Replace with actual role ID
+channel_id = 1453694990134939781  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "classical-ml"
+label = "Reinforcement Learning"
+description = "Discuss RL algorithms and techniques"
+emoji = "🤖"
+role_id = 1463837711101333568  # Replace with actual role ID
+channel_id = 1463840192334139412  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "computer_vision"
+label = "Computer Vision"
+description = "Image processing and visual AI"
+emoji = "👁️"
+role_id = 1463838265764483166  # Replace with actual role ID
+channel_id = 1463840105373503529  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "reinforcement-learning"
+label = "Natural Language Processing"
+description = "Text analysis and language models"
+emoji = "📝"
+role_id = 1463838306130329610  # Replace with actual role ID
+channel_id = 1453695010514927800  # Replace with actual channel ID
+
+[[interest_roles.interests]]
+key = "natural-language-processing"
+label = "Natural Language Processing"
+description = "Text analysis and language models"
+emoji = "📝"
+role_id = 1463846135574560789  # Replace with actual role ID
+channel_id = 1463847818673262660  # Replace with actual channel ID

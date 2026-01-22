@@ -96,8 +96,12 @@ class KatoBot(commands.Bot):
 
         # Load cogs
         # Onboarding must be loaded before welcome (welcome uses onboarding view)
+        # Interest roles must be loaded after onboarding (uses onboarding verification)
         await self.load_extension("bot.cogs.onboarding")
         logger.info("✓ Onboarding cog loaded")
+
+        await self.load_extension("bot.cogs.interest_roles")
+        logger.info("✓ Interest roles cog loaded")
 
         await self.load_extension("bot.cogs.welcome")
         logger.info("✓ Welcome cog loaded")
