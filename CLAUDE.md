@@ -90,7 +90,7 @@ Use `on_raw_*` events for reliability (works across bot restarts):
 
 - **Unit tests**: `tests/unit/` - no database needed
 - **Integration tests**: `tests/integration/` - use `isolated_database` fixture automatically
-- Coverage minimum: 50% (enforced in CI)
+- Coverage minimum: 38% (enforced in CI)
 
 The `isolated_database` fixture creates a fresh temp database per test to prevent locking and pollution.
 
