@@ -557,9 +557,7 @@ class ModerationCog(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-        logger.info(
-            f"{ctx.author} warned {member} (severity {severity}): {reason}"
-        )
+        logger.info(f"{ctx.author} warned {member} (severity {severity}): {reason}")
 
     # =========================================================================
     # WARNINGS COMMAND
@@ -691,9 +689,7 @@ class ModerationCog(commands.Cog, name="Moderation"):
                     f"Warning #{warning_id} has been removed from **{member}**."
                 ),
             )
-            logger.info(
-                f"{ctx.author} removed warning #{warning_id} from {member}"
-            )
+            logger.info(f"{ctx.author} removed warning #{warning_id} from {member}")
         else:
             # Delete all warnings
             await self.bot.db.execute(

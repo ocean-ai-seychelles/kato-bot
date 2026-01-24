@@ -786,12 +786,8 @@ class AutoModCog(commands.Cog, name="AutoMod"):
         )
 
         # Spam settings
-        spam_enabled = self.bot.config.get(
-            "automod", "spam", "enabled", default=True
-        )
-        spam_max = self.bot.config.get(
-            "automod", "spam", "max_messages", default=5
-        )
+        spam_enabled = self.bot.config.get("automod", "spam", "enabled", default=True)
+        spam_max = self.bot.config.get("automod", "spam", "max_messages", default=5)
         spam_window = self.bot.config.get(
             "automod", "spam", "time_window_seconds", default=10
         )
@@ -805,18 +801,12 @@ class AutoModCog(commands.Cog, name="AutoMod"):
         )
 
         # Caps settings
-        caps_enabled = self.bot.config.get(
-            "automod", "caps", "enabled", default=True
-        )
+        caps_enabled = self.bot.config.get("automod", "caps", "enabled", default=True)
         caps_threshold = self.bot.config.get(
             "automod", "caps", "threshold_percentage", default=70
         )
-        caps_min = self.bot.config.get(
-            "automod", "caps", "min_length", default=10
-        )
-        caps_action = self.bot.config.get(
-            "automod", "caps", "action", default="delete"
-        )
+        caps_min = self.bot.config.get("automod", "caps", "min_length", default=10)
+        caps_action = self.bot.config.get("automod", "caps", "action", default="delete")
         caps_status = "✅" if caps_enabled else "❌"
         embed.add_field(
             name=f"Caps Detection {caps_status}",

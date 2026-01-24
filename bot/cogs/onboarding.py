@@ -763,9 +763,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
 
     @commands.command(name="kyc_status")
     @commands.has_permissions(administrator=True)
-    async def kyc_status(
-        self, ctx: commands.Context, member: discord.Member
-    ) -> None:
+    async def kyc_status(self, ctx: commands.Context, member: discord.Member) -> None:
         """Check the KYC verification status of a member.
 
         This command requires administrator permissions.
@@ -867,9 +865,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
 
     @commands.command(name="kyc_delete")
     @commands.has_permissions(administrator=True)
-    async def kyc_delete(
-        self, ctx: commands.Context, member: discord.Member
-    ) -> None:
+    async def kyc_delete(self, ctx: commands.Context, member: discord.Member) -> None:
         """Delete KYC data for a member (allows re-registration).
 
         This command requires administrator permissions.
@@ -918,9 +914,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
 
     @commands.command(name="kyc_delete_id")
     @commands.has_permissions(administrator=True)
-    async def kyc_delete_id(
-        self, ctx: commands.Context, user_id: int
-    ) -> None:
+    async def kyc_delete_id(self, ctx: commands.Context, user_id: int) -> None:
         """Delete KYC data by user ID (for users who left the server).
 
         This command requires administrator permissions. Use this when
@@ -978,9 +972,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
 
     @commands.command(name="kyc_cleanup")
     @commands.has_permissions(administrator=True)
-    async def kyc_cleanup(
-        self, ctx: commands.Context, confirm: str = None
-    ) -> None:
+    async def kyc_cleanup(self, ctx: commands.Context, confirm: str = None) -> None:
         """Find and remove KYC data for users who left the server.
 
         This command requires administrator permissions. Run without
@@ -1063,9 +1055,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
             if len(orphaned) > 10:
                 description += f"\n*...and {len(orphaned) - 10} more*"
 
-            description += (
-                "\n\nRun `!kyc_cleanup confirm` to delete these records."
-            )
+            description += "\n\nRun `!kyc_cleanup confirm` to delete these records."
 
             embed = create_info_embed(
                 title="KYC Cleanup Preview",

@@ -144,12 +144,14 @@ def is_moderator(member: "discord.Member") -> bool:
 
     """
     perms = member.guild_permissions
-    return any([
-        perms.administrator,
-        perms.manage_messages,
-        perms.kick_members,
-        perms.ban_members,
-    ])
+    return any(
+        [
+            perms.administrator,
+            perms.manage_messages,
+            perms.kick_members,
+            perms.ban_members,
+        ]
+    )
 
 
 def sanitize_content_for_log(content: str, max_length: int = 200) -> str:

@@ -206,9 +206,7 @@ class InterestSelectView(discord.ui.View):
 
         # Add select menu if options provided (for ephemeral use)
         if options:
-            self.add_item(
-                InterestSelect(bot, cog, options, current_interests or [])
-            )
+            self.add_item(InterestSelect(bot, cog, options, current_interests or []))
 
 
 class PersistentInterestView(discord.ui.View):
@@ -284,9 +282,7 @@ class PersistentInterestView(discord.ui.View):
         )
 
         # Create view with populated options
-        view = InterestSelectView(
-            self.bot, cog, options, list(current_interests)
-        )
+        view = InterestSelectView(self.bot, cog, options, list(current_interests))
 
         embed = create_info_embed(
             title="Select Your Interests",
@@ -360,9 +356,7 @@ class InterestRolesCog(commands.Cog, name="InterestRoles"):
         )
         return [dict(row) for row in rows] if rows else []
 
-    async def _get_interest_options(
-        self, guild_id: int
-    ) -> list[discord.SelectOption]:
+    async def _get_interest_options(self, guild_id: int) -> list[discord.SelectOption]:
         """Get interest definitions as SelectOption objects.
 
         Args:

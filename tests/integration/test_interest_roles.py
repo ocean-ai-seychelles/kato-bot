@@ -312,6 +312,7 @@ async def test_get_interest_options() -> None:
 
     # Check options are valid
     import discord
+
     for option in options:
         assert isinstance(option, discord.SelectOption)
         assert option.value is not None
