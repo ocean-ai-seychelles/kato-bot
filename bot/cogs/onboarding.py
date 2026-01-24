@@ -39,7 +39,7 @@ NAME_REGEX = re.compile(r"^[a-zA-Z\s\-']+$")
 # Obvious garbage patterns to reject
 GARBAGE_PATTERNS = [
     r"^(.)\1+$",  # All same character (aaaa, 1111)
-    r"^(abc|xyz|qwerty|asdf|test|fake|none|null|na|n/a|user|name|sample)$",  # Common fakes
+    r"^(abc|xyz|qwerty|asdf|test|fake|none|null|na|n/a|user|name|sample)$",
 ]
 GARBAGE_REGEXES = [re.compile(p, re.IGNORECASE) for p in GARBAGE_PATTERNS]
 
@@ -80,7 +80,7 @@ def is_valid_name(name: str) -> tuple[bool, str]:
 
     # Must contain only valid name characters
     if not NAME_REGEX.match(cleaned):
-        return False, "Name should only contain letters, spaces, hyphens, and apostrophes."
+        return False, "Name can only contain letters, spaces, hyphens, or apostrophes."
 
     # Check for garbage in the full name or individual words
     if is_garbage_input(cleaned):
@@ -1064,7 +1064,7 @@ class OnboardingCog(commands.Cog, name="Onboarding"):
                 description += f"\n*...and {len(orphaned) - 10} more*"
 
             description += (
-                f"\n\nRun `!kyc_cleanup confirm` to delete these records."
+                "\n\nRun `!kyc_cleanup confirm` to delete these records."
             )
 
             embed = create_info_embed(
