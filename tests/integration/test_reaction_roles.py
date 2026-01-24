@@ -10,6 +10,8 @@ Usage:
     uv run pytest tests/integration/test_reaction_roles.py -v
 """
 
+from unittest.mock import patch
+
 import pytest
 
 from bot.cogs.reaction_roles import ReactionRolesCog
@@ -126,7 +128,9 @@ class TestReactionRoleMappings:
         await bot.db.connect()
         await bot.db.apply_migrations()
 
-        message_id = config.get("reaction_roles", "message_id")
+        # Use a test message_id and mock the config to return it
+        test_message_id = 123456789
+        test_mappings = [{"emoji": "✅", "role_id": 111111}]
         guild_id = config.get("server", "guild_id")
 
         # Insert guild_config first (to satisfy foreign key)
@@ -141,11 +145,20 @@ class TestReactionRoleMappings:
             INSERT INTO reaction_roles (guild_id, message_id, emoji, role_id)
             VALUES (?, ?, ?, ?)
             """,
-            (guild_id, message_id, "❌", 999999),
+            (guild_id, test_message_id, "❌", 999999),
         )
 
-        # Sync from config (should clear old mapping)
-        await cog._sync_reaction_roles_from_config(guild_id)
+        # Mock config to return valid reaction_roles settings
+        def mock_get(section: str, key: str, default=None):
+            if section == "reaction_roles" and key == "message_id":
+                return test_message_id
+            if section == "reaction_roles" and key == "mappings":
+                return test_mappings
+            return config.get(section, key, default=default)
+
+        # Sync from config (should clear old mapping and add new ones)
+        with patch.object(bot.config, "get", side_effect=mock_get):
+            await cog._sync_reaction_roles_from_config(guild_id)
 
         # Verify old mapping was removed
         old_mapping = await bot.db.fetch_one(
@@ -154,6 +167,14 @@ class TestReactionRoleMappings:
         )
 
         assert old_mapping is None
+
+        # Verify new mapping was added
+        new_mapping = await bot.db.fetch_one(
+            "SELECT * FROM reaction_roles WHERE emoji = ?",
+            ("✅",),
+        )
+        assert new_mapping is not None
+        assert new_mapping["role_id"] == 111111
 
         # Cleanup
         await bot.db.close()

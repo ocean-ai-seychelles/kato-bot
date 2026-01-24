@@ -51,4 +51,4 @@ docker-logs:
 	docker-compose logs -f
 
 pre-commit-install:
-	pre-commit install
+	uv run pre-commit install
