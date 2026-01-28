@@ -1,6 +1,6 @@
 # Welcome to Kato-bot
 
-![Kato - The Seychelles Black Parrot](assets/kato.png)
+<img src="assets/kato.png" alt="Kato - The Seychelles Black Parrot" width="50%">
 
 This is OCEAN AI's custom discord moderation bot.
 
@@ -72,6 +72,6 @@ The project uses GitHub Actions for continuous integration:
 - **Linting**: Ruff checks code style and quality
 - **Formatting**: Ensures consistent code formatting
 - **Testing**: Runs full test suite with coverage reporting
-- **Coverage Threshold**: Maintains 50% code coverage minimum (will increase as features are added)
+- **Coverage Threshold**: Maintains 35% code coverage minimum
 
 All checks must pass before merging pull requests.
