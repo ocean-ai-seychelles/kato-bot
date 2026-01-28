@@ -159,3 +159,8 @@ description = "Text analysis and language models"
 emoji = "📝"
 role_id = 1463846135574560789
 channel_id = 1463847818673262660
+
+[coc]
+enabled = true
+channel_id = 0  # Set to your #rules channel ID
+message_id = 0  # Updated after first !post_coc to enable edits

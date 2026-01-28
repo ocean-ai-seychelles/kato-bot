@@ -121,6 +121,9 @@ class KatoBot(commands.Bot):
         await self.load_extension("bot.cogs.admin")
         logger.info("✓ Admin cog loaded")
 
+        await self.load_extension("bot.cogs.coc")
+        logger.info("✓ CoC cog loaded")
+
         logger.info("✓ Setup complete")
 
     async def on_ready(self) -> None:
