@@ -16,6 +16,7 @@ classical_ml = 1463840192334139412
 computer_vision = 1463840105373503529
 reinforcement_learning = 1453695010514927800
 nlp = 1463847818673262660
+physical_ai = 1474646593452904448
 
 [roles]
 initial = 1453697714025005118                     # member role (assigned via reaction)
@@ -29,6 +30,7 @@ classical_ml = 1463837711101333568
 computer_vision = 1463838265764483166
 reinforcement_learning = 1463838306130329610
 nlp = 1463846135574560789
+physical_ai = 1467079764480262175
 
 [reaction_roles]
 # Old message deleted, using dropdown system instead
@@ -159,6 +161,14 @@ description = "Text analysis and language models"
 emoji = "📝"
 role_id = 1463846135574560789
 channel_id = 1463847818673262660
+
+[[interest_roles.interests]]
+key = "physical-ai"
+label = "Physical AI"
+description = "Robotics, embodied agents, and physical AI"
+emoji = "🤖"
+role_id = 1467079764480262175
+channel_id = 1474646593452904448
 
 [coc]
 enabled = true

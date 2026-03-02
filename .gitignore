@@ -40,3 +40,7 @@ bot.pid
 
 # claude settings
 .claude/settings.local.json
+
+# macos artifacts
+*.DS_Store
+*.swp
