@@ -174,3 +174,14 @@ channel_id = 1474646593452904448
 enabled = true
 channel_id = 0  # Set to your #rules channel ID
 message_id = 0  # Updated after first !post_coc to enable edits
+
+[livestream]
+# Channel where go-live / schedule / cancel announcements are posted
+announce_channel = 1463492231741702185        # Set to your announcements channel ID
+# Who to ping: "@everyone", "@here", or a numeric role ID
+mention = "@everyone"
+# Your local timezone (IANA name). Times you pass to !stream schedule are
+# interpreted in this timezone. Discord shows the result in each viewer's
+# local time automatically.
+# Examples: "America/New_York", "Europe/London", "Asia/Tokyo", "UTC"
+timezone = "Indian/Mahe" # previously set to "UTC"
